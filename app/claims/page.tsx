@@ -2,9 +2,8 @@
 
 import { PartialPaymentDialog } from "@/components/claims/PartialPaymentDialog";
 import { FollowUpDialog } from "@/components/claims/FollowUpDialog";
-import { isFollowUpDue, getFollowUpDate } from "@/lib/utils/claims";
+import { isFollowUpDue } from "@/lib/utils/claims";
 import { useEffect, useState } from "react";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -46,12 +45,12 @@ const AGING_COLORS: Record<string, string> = {
 };
 
 export default function ClaimsPage() {
-  const [claims, setClaims]         = useState<any[]>([]);
-  const [loading, setLoading]       = useState(true);
-  const [statusFilter, setStatus]   = useState("all");
-  const [aidFilter, setAid]         = useState("all");
-  const [branchFilter, setBranch]   = useState("all");
-  const [search, setSearch]         = useState("");
+  const [claims, setClaims]       = useState<any[]>([]);
+  const [loading, setLoading]     = useState(true);
+  const [statusFilter, setStatus] = useState("all");
+  const [aidFilter, setAid]       = useState("all");
+  const [branchFilter, setBranch] = useState("all");
+  const [search, setSearch]       = useState("");
 
   async function fetchClaims() {
     setLoading(true);
@@ -59,7 +58,6 @@ export default function ClaimsPage() {
     if (statusFilter !== "all") params.set("status", statusFilter);
     if (aidFilter !== "all")    params.set("medicalAid", aidFilter);
     if (branchFilter !== "all") params.set("branch", branchFilter);
-
     const res  = await fetch(`/api/claims?${params.toString()}`);
     const json = await res.json();
     setClaims(json.data || []);
@@ -156,98 +154,148 @@ export default function ClaimsPage() {
           </TableHeader>
           <TableBody>
             {filtered.map((claim) => {
-              const days    = getDaysOutstanding(claim.submissionDate, claim.paidDate);
-              const bucket  = getAgingBucket(days);
-              const isDue   = (claim.status === "pending" || claim.status === "approved")
-                && isFollowUpDue(claim.submissionDate, claim.followUpDate);
-          return (
-                    <TableRow
-      key={claim._id}
-      className={isDue ? "bg-orange-50 border-l-2 border-l-orange-400" : ""}
-    >
-      <TableCell className="font-mono text-sm">{claim.claimNumber}</TableCell>
-      <TableCell>
-        <div>
-          <p>{claim.patientName}</p>
-          {isDue && (
-            <p className="text-[10px] text-orange-500 font-semibold">
-              ⏰ Follow-up due
-            </p>
-          )}
-        </div>
-      </TableCell>
-      <TableCell>{claim.medicalAid}</TableCell>
-      <TableCell>{claim.branch}</TableCell>
-      <TableCell>
-        <div>
-          <p>{formatUSD(claim.amount)}</p>
-          {claim.partialAmountPaid && (
-            <p className="text-[10px] text-orange-500">
-              Paid: {formatUSD(claim.partialAmountPaid)}
-            </p>
-          )}
-        </div>
-      </TableCell>
-      <TableCell>
-        {new Date(claim.submissionDate).toLocaleDateString()}
-      </TableCell>
-      <TableCell className={AGING_COLORS[bucket]}>{days}d</TableCell>
-      <TableCell>
-        <span className={`px-2 py-1 rounded-full text-xs font-medium ${STATUS_COLORS[claim.status] || ""}`}>
-          {claim.status}
-        </span>
-      </TableCell>
-      <TableCell>
-        <div className="flex gap-1 items-center flex-wrap">
-          {(claim.status === "pending" || claim.status === "approved") && (
-            <>
-              <Select onValueChange={(val) => updateStatus(claim._id, val)}>
-                <SelectTrigger className="w-28 h-7 text-xs">
-                  <SelectValue placeholder="Update" />
-                </SelectTrigger>
-                <SelectContent>
-                  {(["pending", "approved", "paid"] as const).map((s) => (
-                    <SelectItem key={s} value={s}>{s}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <PartialPaymentDialog
-                claimId={claim._id}
-                totalAmount={claim.amount}
-                onDone={fetchClaims}
-              />
-              <RejectDialog claimId={claim._id} onDone={fetchClaims} />
-              <FollowUpDialog
-                claimId={claim._id}
-                submissionDate={claim.submissionDate}
-                currentFollowUpDate={claim.followUpDate}
-                onDone={fetchClaims}
-              />
-            </>
-          )}
-          {claim.status === "rejected" && (
-            <ResubmitDialog
-              claimId={claim._id}
-              originalClaimNumber={claim.claimNumber}
-              onDone={fetchClaims}
-            />
-          )}
-          {(claim.status === "paid" ||
-            claim.status === "partial" ||
-            claim.status === "superseded") && (
-            <span className="text-xs text-muted-foreground">{claim.status}</span>
-          )}
-          <Link href={`/claims/${claim._id}/edit`}>
-            <Button variant="ghost" size="sm">Edit</Button>
-          </Link>
-          <DeleteDialog
-            claimId={claim._id}
-            claimNumber={claim.claimNumber}
-            onDone={fetchClaims}
-          />
-        </div>
-      </TableCell>
-      </TableRow>
+              const days   = getDaysOutstanding(claim.submissionDate, claim.paidDate);
+              const bucket = getAgingBucket(days);
+              const isDue  =
+                (claim.status === "pending" || claim.status === "approved" || claim.status === "partial") &&
+                isFollowUpDue(claim.submissionDate, claim.followUpDate);
+
+              return (
+                <TableRow
+                  key={claim._id}
+                  className={isDue ? "bg-orange-50 border-l-2 border-l-orange-400" : ""}
+                >
+                  <TableCell className="font-mono text-sm">{claim.claimNumber}</TableCell>
+
+                  <TableCell>
+                    <div>
+                      <p>{claim.patientName}</p>
+                      {isDue && (
+                        <p className="text-[10px] text-orange-500 font-semibold">⏰ Follow-up due</p>
+                      )}
+                    </div>
+                  </TableCell>
+
+                  <TableCell>{claim.medicalAid}</TableCell>
+                  <TableCell>{claim.branch}</TableCell>
+
+                  <TableCell>
+                    <div>
+                      <p>{formatUSD(claim.amount)}</p>
+                      {claim.partialAmountPaid && (
+                        <>
+                          <p className="text-[10px] text-green-600">
+                            Paid: {formatUSD(claim.partialAmountPaid)}
+                          </p>
+                          <p className="text-[10px] text-orange-500 font-semibold">
+                            Bal: {formatUSD(claim.amount - claim.partialAmountPaid)}
+                          </p>
+                        </>
+                      )}
+                    </div>
+                  </TableCell>
+
+                  <TableCell>{new Date(claim.submissionDate).toLocaleDateString()}</TableCell>
+                  <TableCell className={AGING_COLORS[bucket]}>{days}d</TableCell>
+
+                  <TableCell>
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${STATUS_COLORS[claim.status] || ""}`}>
+                      {claim.status}
+                    </span>
+                  </TableCell>
+
+                  <TableCell>
+                    <div className="flex gap-1 items-center flex-wrap">
+
+                      {/* ── Pending or Approved — full workflow ── */}
+                      {(claim.status === "pending" || claim.status === "approved") && (
+                        <>
+                          <Select onValueChange={(val) => updateStatus(claim._id, val)}>
+                            <SelectTrigger className="w-28 h-7 text-xs">
+                              <SelectValue placeholder="Update" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="pending">pending</SelectItem>
+                              <SelectItem value="approved">approved</SelectItem>
+                              <SelectItem value="paid">paid</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <PartialPaymentDialog
+                            claimId={claim._id}
+                            totalAmount={claim.amount}
+                            onDone={fetchClaims}
+                          />
+                          <RejectDialog claimId={claim._id} onDone={fetchClaims} />
+                          <FollowUpDialog
+                            claimId={claim._id}
+                            submissionDate={claim.submissionDate}
+                            currentFollowUpDate={claim.followUpDate}
+                            onDone={fetchClaims}
+                          />
+                        </>
+                      )}
+
+                      {/* ── Rejected — resubmit ── */}
+                      {claim.status === "rejected" && (
+                        <ResubmitDialog
+                          claimId={claim._id}
+                          originalClaimNumber={claim.claimNumber}
+                          onDone={fetchClaims}
+                        />
+                      )}
+
+                      {/* ── Paid — only logical corrections ── */}
+                      {claim.status === "paid" && (
+                        <Select onValueChange={(val) => updateStatus(claim._id, val)}>
+                          <SelectTrigger className="w-32 h-7 text-xs border-dashed text-gray-400">
+                            <SelectValue placeholder="Correct ↩" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="approved">↩ approved</SelectItem>
+                            <SelectItem value="pending">↩ pending</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      )}
+
+                      {/* ── Partial — can promote to paid or revert ── */}
+                      {claim.status === "partial" && (
+                        <Select onValueChange={(val) => updateStatus(claim._id, val)}>
+                          <SelectTrigger className="w-32 h-7 text-xs border-dashed text-gray-400">
+                            <SelectValue placeholder="Correct ↩" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="paid">→ paid (full)</SelectItem>
+                            <SelectItem value="approved">↩ approved</SelectItem>
+                            <SelectItem value="pending">↩ pending</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      )}
+
+                      {/* ── Superseded — reactivate only ── */}
+                      {claim.status === "superseded" && (
+                        <Select onValueChange={(val) => updateStatus(claim._id, val)}>
+                          <SelectTrigger className="w-32 h-7 text-xs border-dashed text-gray-400">
+                            <SelectValue placeholder="Correct ↩" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="pending">↩ reactivate</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      )}
+
+                      {/* ── Always available ── */}
+                      <Link href={`/claims/${claim._id}/edit`}>
+                        <Button variant="ghost" size="sm">Edit</Button>
+                      </Link>
+                      <DeleteDialog
+                        claimId={claim._id}
+                        claimNumber={claim.claimNumber}
+                        onDone={fetchClaims}
+                      />
+
+                    </div>
+                  </TableCell>
+                </TableRow>
               );
             })}
             {filtered.length === 0 && (
