@@ -34,7 +34,7 @@ const ClaimSchema = new Schema<IClaim>(
     amount:          { type: Number, required: true },
     status:          {
       type: String,
-      enum: ["pending", "approved", "rejected", "paid"],
+      enum: ["pending", "approved", "rejected", "paid", "superseded"],
       default: "pending",
     },
     rejectionReason: { type: String },

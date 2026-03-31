@@ -48,9 +48,6 @@ export function exportToCSV(claims: any[], filename: string) {
     )
     .join("\n");
 
-  const blob = new URL(
-    `data:text/csv;charset=utf-8,${encodeURIComponent(csvContent)}`
-  );
 
   const link = document.createElement("a");
   link.href = `data:text/csv;charset=utf-8,${encodeURIComponent(csvContent)}`;
