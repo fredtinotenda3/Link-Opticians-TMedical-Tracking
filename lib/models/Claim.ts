@@ -10,7 +10,7 @@ export interface IClaim extends Document {
   serviceDate: Date;
   submissionDate: Date;
   amount: number;
-  status: "pending" | "approved" | "rejected" | "paid";
+  status: "pending" | "approved" | "rejected" | "paid" | "superseded" | "partial";
   rejectionReason?: string;
   paidDate?: Date;
   notes?: string;
