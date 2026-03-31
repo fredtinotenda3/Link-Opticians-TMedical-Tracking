@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { getDaysOutstanding, formatUSD } from "@/lib/utils/claims";
 import Link from "next/link";
+import { isFollowUpDue } from "@/lib/utils/claims";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 interface Claim {
@@ -16,6 +17,7 @@ interface Claim {
   submissionDate: string;
   paidDate?: string;
   rejectionReason?: string;
+  followUpDate?: string;
 }
 
 // ─── Stat Card ────────────────────────────────────────────────────────────────
@@ -234,7 +236,7 @@ function RejectedTable({ claims }: { claims: Claim[] }) {
               </p>
               {c.rejectionReason && (
                 <p className="text-xs text-red-500 mt-0.5">
-                  "{c.rejectionReason}"
+                  &quot;{c.rejectionReason}&quot;
                 </p>
               )}
             </div>
@@ -473,6 +475,54 @@ export default function DashboardPage() {
             />
           </div>
         </div>
+
+        {/* Follow-up Due Banner */}
+{(() => {
+  const dueNow = outstanding.filter((c) =>
+    isFollowUpDue(c.submissionDate, c.followUpDate)
+  );
+  if (dueNow.length === 0) return null;
+  return (
+    <div className="bg-orange-50 border border-orange-200 rounded-2xl p-5">
+      <div className="flex items-center justify-between mb-3">
+        <div>
+          <p className="text-sm font-semibold text-orange-800">
+            ⏰ {dueNow.length} claim{dueNow.length !== 1 ? "s" : ""} need follow-up today
+          </p>
+          <p className="text-xs text-orange-500 mt-0.5">
+            These claims passed their 30-day follow-up date — chase the medical aid
+          </p>
+        </div>
+        <Link href="/claims">
+          <button className="text-xs text-orange-700 border border-orange-300 px-3 py-1.5 rounded-lg hover:bg-orange-100 transition-colors">
+            View in Claims →
+          </button>
+        </Link>
+      </div>
+      <div className="space-y-2">
+        {dueNow.slice(0, 3).map((c) => (
+          <div
+            key={c._id}
+            className="flex items-center justify-between bg-white rounded-lg px-3 py-2 border border-orange-100"
+          >
+            <div>
+              <p className="text-sm font-medium text-gray-800">{c.patientName}</p>
+              <p className="text-xs text-gray-400">
+                {c.medicalAid} · {c.claimNumber} · {c.status}
+              </p>
+            </div>
+            <p className="text-sm font-bold text-gray-900">{formatUSD(c.amount)}</p>
+          </div>
+        ))}
+        {dueNow.length > 3 && (
+          <p className="text-xs text-orange-500 text-center pt-1">
+            +{dueNow.length - 3} more in the claims table
+          </p>
+        )}
+      </div>
+    </div>
+  );
+})()}
 
         {/* ── Row 4: Rejected Action List ── */}
         {rejected.length > 0 && <RejectedTable claims={rejected} />}

@@ -16,4 +16,4 @@ export const BRANCHES = [
   "Chiredzi",
 ];
 
-export const STATUSES = ["pending", "approved", "rejected", "paid", "superseded"] as const;
+export const STATUSES = ["pending", "approved", "rejected", "paid", "superseded", "partial"] as const;

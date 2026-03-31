@@ -16,9 +16,10 @@ export interface IClaim extends Document {
   notes?: string;
   createdAt: Date;
   updatedAt: Date;
-  // Add to IClaim interface
-  resubmittedFrom?: mongoose.Types.ObjectId; // links to original rejected claim
-  resubmissionCount?: number;                // how many times resubmitted
+  resubmittedFrom?: mongoose.Types.ObjectId; 
+  resubmissionCount?: number; 
+  partialAmountPaid?: number;
+  followUpDate?: Date;               
 }
 
 const ClaimSchema = new Schema<IClaim>(
@@ -32,15 +33,16 @@ const ClaimSchema = new Schema<IClaim>(
     serviceDate:     { type: Date,   required: true },
     submissionDate:  { type: Date,   required: true },
     amount:          { type: Number, required: true },
+    partialAmountPaid: { type: Number },
+    followUpDate:      { type: Date },
     status:          {
       type: String,
-      enum: ["pending", "approved", "rejected", "paid", "superseded"],
+      enum: ["pending", "approved", "rejected", "paid", "superseded", "partial"],
       default: "pending",
     },
     rejectionReason: { type: String },
     paidDate:        { type: Date },
     notes:           { type: String },
-    // Add to ClaimSchema fields
     resubmittedFrom:    { type: Schema.Types.ObjectId, ref: "Claim" },
     resubmissionCount:  { type: Number, default: 0 },
   },
