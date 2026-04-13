@@ -9,15 +9,17 @@ import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer,
   LineChart, Line, CartesianGrid, Legend,
 } from "recharts";
-import { formatUSD, getDaysOutstanding, getAgingBucket } from "@/lib/utils/claims";
+import { getDaysOutstanding, getAgingBucket } from "@/lib/utils/claims";
+import { formatCurrency } from "@/lib/utils/currency";
 import { isFollowUpDue } from "@/lib/utils/claims";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { exportToCSV } from "@/lib/utils/export";
+import { useCurrency } from "@/context/CurrencyContext";
 
-// ─── Types ────────────────────────────────────────────────────────────────────
+// ─── Types ───────────────────────────────────────────────────────────────
 interface Claim {
   _id: string;
   claimNumber: string;
@@ -25,6 +27,7 @@ interface Claim {
   medicalAid: string;
   branch: string;
   amount: number;
+  currency: "USD" | "ZWG";
   partialAmountPaid?: number;
   status: string;
   submissionDate: string;
@@ -33,7 +36,7 @@ interface Claim {
   followUpDate?: string;
 }
 
-// ─── Category config ──────────────────────────────────────────────────────────
+// ─── Category config ─────────────────────────────────────────────────────
 const CATEGORY_CONFIG: Record<string, {
   label: string;
   description: string;
@@ -45,7 +48,7 @@ const CATEGORY_CONFIG: Record<string, {
     label: "Pending Claims",
     description: "Submitted to 263 — awaiting approval or rejection",
     accent: "bg-amber-400",
-    icon: "🕐",
+    icon: "🕒",
     filter: (c) => c.status === "pending",
   },
   approved: {
@@ -141,7 +144,7 @@ const STATUS_COLORS: Record<string, string> = {
   superseded: "bg-gray-100 text-gray-400",
 };
 
-// ─── Analytics Card ───────────────────────────────────────────────────────────
+// ─── Analytics Card ──────────────────────────────────────────────────────
 function AnalyticCard({
   label, value, sub, accent,
 }: { label: string; value: string; sub?: string; accent: string }) {
@@ -154,30 +157,38 @@ function AnalyticCard({
   );
 }
 
-// ─── Main Category Page ───────────────────────────────────────────────────────
+// ─── Main Category Page ──────────────────────────────────────────────────
 export default function CategoryPage() {
   const { status } = useParams<{ status: string }>();
   const searchParams = useSearchParams();
   const aid = searchParams.get("aid") || undefined;
+  const urlCurrency = searchParams.get("currency");
+  const { currency: contextCurrency } = useCurrency();
   const router = useRouter();
 
+  // Use URL currency if provided, otherwise use context currency
+  const activeCurrency = (urlCurrency as "USD" | "ZWG") || contextCurrency;
+
   const [allClaims, setAllClaims] = useState<Claim[]>([]);
-  const [loading, setLoading]     = useState(true);
-  const [sortBy, setSortBy]       = useState<"days" | "amount" | "date">("days");
-  const [sortDir, setSortDir]     = useState<"desc" | "asc">("desc");
+  const [loading, setLoading] = useState(true);
+  const [sortBy, setSortBy] = useState<"days" | "amount" | "date">("days");
+  const [sortDir, setSortDir] = useState<"desc" | "asc">("desc");
 
   const config = CATEGORY_CONFIG[status] || CATEGORY_CONFIG.outstanding;
 
+  // Fetch claims filtered by currency
   useEffect(() => {
-    fetch("/api/claims")
+    const params = new URLSearchParams();
+    params.set("currency", activeCurrency);
+    fetch(`/api/claims?${params.toString()}`)
       .then((r) => r.json())
       .then((j) => { setAllClaims(j.data || []); setLoading(false); });
-  }, []);
+  }, [activeCurrency]);
 
-  // Filter claims for this category
+  // Filter claims for this category AND by currency
   const claims = useMemo(
-    () => allClaims.filter((c) => config.filter(c, aid)),
-    [allClaims, status, aid]
+    () => allClaims.filter((c) => config.filter(c, aid) && c.currency === activeCurrency),
+    [allClaims, status, aid, activeCurrency]
   );
 
   // Effective amount helper
@@ -248,7 +259,7 @@ export default function CategoryPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <p className="text-gray-400 text-sm animate-pulse">Loading...</p>
+        <p className="text-gray-400 text-sm animate-pulse">Loading {activeCurrency} claims...</p>
       </div>
     );
   }
@@ -269,12 +280,14 @@ export default function CategoryPage() {
                 <span className="text-gray-700 font-medium">{aid}</span>
               </>
             )}
+            <span>›</span>
+            <span className="text-gray-700 font-medium">{activeCurrency}</span>
           </div>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <span className="text-2xl">{config.icon}</span>
               <div>
-                <h1 className="text-xl font-bold text-gray-900">{config.label}</h1>
+                <h1 className="text-xl font-bold text-gray-900">{config.label} ({activeCurrency})</h1>
                 <p className="text-xs text-gray-400 mt-0.5">{config.description}</p>
               </div>
             </div>
@@ -282,7 +295,7 @@ export default function CategoryPage() {
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => exportToCSV(sorted, `link-${status}-claims-${new Date().toISOString().split("T")[0]}.csv`)}
+                onClick={() => exportToCSV(sorted, `link-${status}-${activeCurrency}-claims-${new Date().toISOString().split("T")[0]}.csv`)}
               >
                 Export CSV
               </Button>
@@ -297,37 +310,39 @@ export default function CategoryPage() {
       <div className="max-w-6xl mx-auto px-6 py-8 space-y-8">
 
         {/* ── Level 2 Analytics ── */}
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-3">
-            Category Analysis — {claims.length} claims
-          </p>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <AnalyticCard
-              label="Total Amount"
-              value={formatUSD(totalAmount)}
-              sub={`across ${claims.length} claims`}
-              accent="border-gray-700"
-            />
-            <AnalyticCard
-              label="Avg Days Outstanding"
-              value={`${avgDays}d`}
-              sub="average across all claims"
-              accent={avgDays > 60 ? "border-red-500" : avgDays > 30 ? "border-amber-400" : "border-emerald-400"}
-            />
-            <AnalyticCard
-              label="Oldest Claim"
-              value={`${oldest}d`}
-              sub="longest outstanding claim"
-              accent={oldest > 60 ? "border-red-500" : "border-amber-400"}
-            />
-            <AnalyticCard
-              label="Largest Claim"
-              value={formatUSD(largest)}
-              sub="highest single claim"
-              accent="border-blue-400"
-            />
+        {claims.length > 0 && (
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-3">
+              Category Analysis — {claims.length} claims in {activeCurrency}
+            </p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <AnalyticCard
+                label="Total Amount"
+                value={formatCurrency(totalAmount, activeCurrency)}
+                sub={`across ${claims.length} claims`}
+                accent="border-gray-700"
+              />
+              <AnalyticCard
+                label="Avg Days Outstanding"
+                value={`${avgDays}d`}
+                sub="average across all claims"
+                accent={avgDays > 60 ? "border-red-500" : avgDays > 30 ? "border-amber-400" : "border-emerald-400"}
+              />
+              <AnalyticCard
+                label="Oldest Claim"
+                value={`${oldest}d`}
+                sub="longest outstanding claim"
+                accent={oldest > 60 ? "border-red-500" : "border-amber-400"}
+              />
+              <AnalyticCard
+                label="Largest Claim"
+                value={formatCurrency(largest, activeCurrency)}
+                sub="highest single claim"
+                accent="border-blue-400"
+              />
+            </div>
           </div>
-        </div>
+        )}
 
         {/* ── Charts ── */}
         {claims.length > 0 && (
@@ -336,22 +351,26 @@ export default function CategoryPage() {
             {/* By Medical Aid */}
             <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
               <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-4">
-                Amount by Medical Aid
+                Amount by Medical Aid ({activeCurrency})
               </p>
-              <ResponsiveContainer width="100%" height={200}>
-                <BarChart data={byAidData} margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
-                  <XAxis dataKey="name" tick={{ fontSize: 11 }} />
-                  <YAxis tick={{ fontSize: 11 }} tickFormatter={(v) => `$${v}`} />
-                  <Tooltip formatter={(v: number) => formatUSD(v)} />
-                  <Bar dataKey="amount" fill="#6366f1" radius={[4, 4, 0, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
+              {byAidData.length === 0 ? (
+                <p className="text-sm text-gray-400 text-center py-8">No data available</p>
+              ) : (
+                <ResponsiveContainer width="100%" height={200}>
+                  <BarChart data={byAidData} margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
+                    <XAxis dataKey="name" tick={{ fontSize: 11 }} />
+                    <YAxis tick={{ fontSize: 11 }} tickFormatter={(v) => `${activeCurrency === "USD" ? "$" : "ZWG "}${v}`} />
+                    <Tooltip formatter={(v: number) => formatCurrency(v, activeCurrency)} />
+                    <Bar dataKey="amount" fill="#6366f1" radius={[4, 4, 0, 0]} />
+                  </BarChart>
+                </ResponsiveContainer>
+              )}
             </div>
 
             {/* Submission Trend */}
             <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
               <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-4">
-                Submission Trend — Last 30 Days
+                Submission Trend — Last 30 Days ({activeCurrency})
               </p>
               <ResponsiveContainer width="100%" height={200}>
                 <LineChart data={trendData} margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
@@ -373,6 +392,7 @@ export default function CategoryPage() {
             <p className="text-sm font-semibold text-gray-700">
               {sorted.length} claim{sorted.length !== 1 ? "s" : ""}
               {aid ? ` · ${aid}` : ""}
+              {` · ${activeCurrency}`}
             </p>
             <div className="flex items-center gap-2">
               <span className="text-xs text-gray-400">Sort by</span>
@@ -406,7 +426,7 @@ export default function CategoryPage() {
 
           {sorted.length === 0 ? (
             <div className="py-16 text-center">
-              <p className="text-gray-400 text-sm">No claims in this category</p>
+              <p className="text-gray-400 text-sm">No {activeCurrency} claims in this category</p>
               <Link href="/dashboard">
                 <p className="text-xs text-blue-500 hover:underline mt-2 cursor-pointer">← Back to dashboard</p>
               </Link>
@@ -420,7 +440,7 @@ export default function CategoryPage() {
                     <th className="text-left px-4 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wide">Patient</th>
                     <th className="text-left px-4 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wide">Medical Aid</th>
                     <th className="text-left px-4 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wide">Branch</th>
-                    <th className="text-right px-4 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wide">Amount</th>
+                    <th className="text-right px-4 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wide">Amount ({activeCurrency})</th>
                     <th className="text-left px-4 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wide">Submitted</th>
                     <th className="text-left px-4 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wide">Days Out</th>
                     <th className="text-left px-4 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wide">Status</th>
@@ -446,9 +466,9 @@ export default function CategoryPage() {
                         <td className="px-4 py-3 text-gray-600">{claim.medicalAid}</td>
                         <td className="px-4 py-3 text-gray-600">{claim.branch}</td>
                         <td className="px-4 py-3 text-right">
-                          <p className="font-semibold text-gray-900">{formatUSD(effectiveAmount(claim))}</p>
+                          <p className="font-semibold text-gray-900">{formatCurrency(effectiveAmount(claim), activeCurrency)}</p>
                           {claim.partialAmountPaid && (
-                            <p className="text-[10px] text-orange-500">bal. of {formatUSD(claim.amount)}</p>
+                            <p className="text-[10px] text-orange-500">bal. of {formatCurrency(claim.amount, activeCurrency)}</p>
                           )}
                         </td>
                         <td className="px-4 py-3 text-gray-500 text-xs">
@@ -476,9 +496,9 @@ export default function CategoryPage() {
               ← Dashboard
             </button>
           </Link>
-          <Link href="/claims">
+          <Link href={`/claims?currency=${activeCurrency}`}>
             <button className="text-sm text-gray-600 border border-gray-200 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors">
-              All Claims
+              All Claims ({activeCurrency})
             </button>
           </Link>
         </div>

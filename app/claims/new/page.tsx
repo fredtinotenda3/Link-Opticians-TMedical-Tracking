@@ -14,7 +14,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { MEDICAL_AIDS, BRANCHES } from "@/lib/constants";
+import { MEDICAL_AIDS, BRANCHES, CURRENCIES } from "@/lib/constants";
 
 export default function NewClaimPage() {
   const router = useRouter();
@@ -29,6 +29,8 @@ export default function NewClaimPage() {
     serviceDate:    "",
     submissionDate: new Date().toISOString().split("T")[0],
     amount:         "",
+    amountZWG:      "",  // NEW
+    currency:       "USD",  // NEW
     notes:          "",
   });
 
@@ -38,11 +40,19 @@ export default function NewClaimPage() {
 
   async function handleSubmit() {
     setLoading(true);
+    
+    const payload: any = {
+      ...form,
+      amount: form.currency === "USD" ? parseFloat(form.amount) : 0,
+      amountZWG: form.currency === "ZWG" ? parseFloat(form.amount) : undefined,
+    };
+    
     const res = await fetch("/api/claims", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...form, amount: parseFloat(form.amount) }),
+      body: JSON.stringify(payload),
     });
+    
     if (res.ok) router.push("/claims");
     else setLoading(false);
   }
@@ -59,10 +69,33 @@ export default function NewClaimPage() {
               <Label>Claim Number (from 263)</Label>
               <Input value={form.claimNumber} onChange={(e) => set("claimNumber", e.target.value)} />
             </div>
+            
+            {/* NEW: Currency selector */}
             <div className="space-y-1">
-              <Label>Amount (USD)</Label>
-              <Input type="number" value={form.amount} onChange={(e) => set("amount", e.target.value)} />
+              <Label>Currency</Label>
+              <Select onValueChange={(v) => set("currency", v)} defaultValue="USD">
+                <SelectTrigger>
+                  <SelectValue placeholder="Select currency" />
+                </SelectTrigger>
+                <SelectContent>
+                  {CURRENCIES.map((c) => (
+                    <SelectItem key={c} value={c}>{c}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
+            
+            {/* Amount field with dynamic label */}
+            <div className="space-y-1">
+              <Label>Amount ({form.currency})</Label>
+              <Input 
+                type="number" 
+                placeholder={`Amount in ${form.currency}`}
+                value={form.amount} 
+                onChange={(e) => set("amount", e.target.value)} 
+              />
+            </div>
+            
             <div className="space-y-1">
               <Label>Patient Name</Label>
               <Input value={form.patientName} onChange={(e) => set("patientName", e.target.value)} />

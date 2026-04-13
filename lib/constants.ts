@@ -1,10 +1,16 @@
 export const MEDICAL_AIDS = [
   "PSMAS",
   "CIMAS",
-  "First Mutual",
-  "Medtech",
+  "Emerald",
+  "Advantage Health",
   "Fidelity Life",
-  "Econet Life",
+  "First Mutual",
+  "Alliance Health",
+  "Cellmed Health",
+  "FBC health",
+  "EMF",
+  "Minerva",
+  "Maisha",
   "Other",
 ];
 
@@ -16,4 +22,8 @@ export const BRANCHES = [
   "Chiredzi",
 ];
 
-export const STATUSES = ["pending", "approved", "rejected", "paid", "superseded", "partial"] as const;
+export const STATUSES = ["pending", "approved", "rejected", "paid", "partial"] as const;
+
+// NEW: Currency options
+export const CURRENCIES = ["USD", "ZWG"] as const;
+export type Currency = typeof CURRENCIES[number];

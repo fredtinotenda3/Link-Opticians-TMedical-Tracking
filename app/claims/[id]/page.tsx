@@ -5,7 +5,8 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import { formatUSD, getDaysOutstanding } from "@/lib/utils/claims";
+import { getDaysOutstanding } from "@/lib/utils/claims";
+import { formatCurrency } from "@/lib/utils/currency";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -19,9 +20,9 @@ import { ResubmitDialog } from "@/components/claims/ResubmitDialog";
 import { PartialPaymentDialog } from "@/components/claims/PartialPaymentDialog";
 import { FollowUpDialog } from "@/components/claims/FollowUpDialog";
 import { DeleteDialog } from "@/components/claims/DeleteDialog";
-import { MEDICAL_AIDS, BRANCHES } from "@/lib/constants";
+import { MEDICAL_AIDS, BRANCHES, CURRENCIES } from "@/lib/constants";
 
-// ─── Types ────────────────────────────────────────────────────────────────────
+// ─── Types ───────────────────────────────────────────────────────────────
 interface Claim {
   _id: string;
   claimNumber: string;
@@ -31,6 +32,7 @@ interface Claim {
   memberNumber: string;
   branch: string;
   amount: number;
+  currency: "USD" | "ZWG";
   partialAmountPaid?: number;
   status: string;
   submissionDate: string;
@@ -45,7 +47,7 @@ interface Claim {
   updatedAt: string;
 }
 
-// ─── Status Colors ────────────────────────────────────────────────────────────
+// ─── Status Colors ──────────────────────────────────────────────────────
 const STATUS_COLORS: Record<string, string> = {
   pending:    "bg-yellow-100 text-yellow-800 border-yellow-200",
   approved:   "bg-blue-100 text-blue-800 border-blue-200",
@@ -55,7 +57,7 @@ const STATUS_COLORS: Record<string, string> = {
   superseded: "bg-gray-100 text-gray-500 border-gray-200",
 };
 
-// ─── Timeline Step ────────────────────────────────────────────────────────────
+// ─── Timeline Step ──────────────────────────────────────────────────────
 function TimelineStep({
   label, date, done, active, color,
 }: {
@@ -76,7 +78,7 @@ function TimelineStep({
   );
 }
 
-// ─── Info Row ─────────────────────────────────────────────────────────────────
+// ─── Info Row ───────────────────────────────────────────────────────────
 function InfoRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex items-start justify-between py-2 border-b border-gray-50 last:border-0">
@@ -86,7 +88,7 @@ function InfoRow({ label, value }: { label: string; value: string }) {
   );
 }
 
-// ─── Main Claim Detail Page ───────────────────────────────────────────────────
+// ─── Main Claim Detail Page ─────────────────────────────────────────────
 export default function ClaimDetailPage() {
   const { id }    = useParams<{ id: string }>();
   const router    = useRouter();
@@ -105,6 +107,7 @@ export default function ClaimDetailPage() {
       ...c,
       serviceDate:    c.serviceDate?.split("T")[0] || "",
       submissionDate: c.submissionDate?.split("T")[0] || "",
+      currency:       c.currency || "USD",
     });
     setLoading(false);
   }
@@ -117,10 +120,18 @@ export default function ClaimDetailPage() {
 
   async function handleSave() {
     setSaving(true);
+    const payload: any = { ...form };
+    if (form.currency === "USD") {
+      payload.amount = parseFloat(form.amount);
+      payload.amountZWG = undefined;
+    } else {
+      payload.amountZWG = parseFloat(form.amount);
+      payload.amount = 0;
+    }
     await fetch(`/api/claims/${id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...form, amount: parseFloat(form.amount) }),
+      body: JSON.stringify(payload),
     });
     setSaving(false);
     setEditing(false);
@@ -223,11 +234,11 @@ export default function ClaimDetailPage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
               <p className="text-xs text-gray-400 uppercase tracking-wide font-semibold">Claim Amount</p>
-              <p className="text-2xl font-bold text-gray-900 mt-1">{formatUSD(claim.amount)}</p>
+              <p className="text-2xl font-bold text-gray-900 mt-1">{formatCurrency(claim.amount, claim.currency)}</p>
               {claim.partialAmountPaid && (
                 <>
-                  <p className="text-xs text-green-600 mt-0.5">Paid: {formatUSD(claim.partialAmountPaid)}</p>
-                  <p className="text-xs text-orange-500">Balance: {formatUSD(effectiveAmount)}</p>
+                  <p className="text-xs text-green-600 mt-0.5">Paid: {formatCurrency(claim.partialAmountPaid, claim.currency)}</p>
+                  <p className="text-xs text-orange-500">Balance: {formatCurrency(effectiveAmount, claim.currency)}</p>
                 </>
               )}
             </div>
@@ -285,33 +296,33 @@ export default function ClaimDetailPage() {
             {/* Payment Breakdown */}
             <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
               <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-3">
-                Payment Breakdown
+                Payment Breakdown ({claim.currency})
               </p>
               <div className="space-y-2">
                 <div className="flex justify-between">
                   <span className="text-sm text-gray-500">Original claim</span>
-                  <span className="text-sm font-semibold text-gray-900">{formatUSD(claim.amount)}</span>
+                  <span className="text-sm font-semibold text-gray-900">{formatCurrency(claim.amount, claim.currency)}</span>
                 </div>
                 {claim.partialAmountPaid ? (
                   <>
                     <div className="flex justify-between">
                       <span className="text-sm text-gray-500">Amount paid</span>
-                      <span className="text-sm font-semibold text-green-600">{formatUSD(claim.partialAmountPaid)}</span>
+                      <span className="text-sm font-semibold text-green-600">{formatCurrency(claim.partialAmountPaid, claim.currency)}</span>
                     </div>
                     <div className="flex justify-between border-t pt-2">
                       <span className="text-sm text-gray-500">Balance written off</span>
-                      <span className="text-sm font-semibold text-red-500">{formatUSD(balanceWrittenOff)}</span>
+                      <span className="text-sm font-semibold text-red-500">{formatCurrency(balanceWrittenOff, claim.currency)}</span>
                     </div>
                   </>
                 ) : claim.status === "paid" ? (
                   <div className="flex justify-between">
                     <span className="text-sm text-gray-500">Paid in full</span>
-                    <span className="text-sm font-semibold text-green-600">{formatUSD(claim.amount)}</span>
+                    <span className="text-sm font-semibold text-green-600">{formatCurrency(claim.amount, claim.currency)}</span>
                   </div>
                 ) : (
                   <div className="flex justify-between border-t pt-2">
                     <span className="text-sm text-gray-500">Outstanding</span>
-                    <span className="text-sm font-semibold text-orange-600">{formatUSD(claim.amount)}</span>
+                    <span className="text-sm font-semibold text-orange-600">{formatCurrency(claim.amount, claim.currency)}</span>
                   </div>
                 )}
                 {claim.paidDate && (
@@ -340,7 +351,16 @@ export default function ClaimDetailPage() {
                     <Input value={form.claimNumber} onChange={(e) => setField("claimNumber", e.target.value)} />
                   </div>
                   <div className="space-y-1">
-                    <Label>Amount (USD)</Label>
+                    <Label>Currency</Label>
+                    <Select onValueChange={(v) => setField("currency", v)} defaultValue={form.currency}>
+                      <SelectTrigger><SelectValue /></SelectTrigger>
+                      <SelectContent>
+                        {CURRENCIES.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-1">
+                    <Label>Amount ({form.currency})</Label>
                     <Input type="number" value={form.amount} onChange={(e) => setField("amount", e.target.value)} />
                   </div>
                   <div className="space-y-1">
@@ -396,6 +416,8 @@ export default function ClaimDetailPage() {
                   <InfoRow label="Branch"         value={claim.branch} />
                   <InfoRow label="Service Date"   value={new Date(claim.serviceDate).toLocaleDateString()} />
                   <InfoRow label="Submitted"      value={new Date(claim.submissionDate).toLocaleDateString()} />
+                  <InfoRow label="Currency"       value={claim.currency} />
+                  <InfoRow label="Amount"         value={formatCurrency(claim.amount, claim.currency)} />
                   <InfoRow label="Last Updated"   value={new Date(claim.updatedAt).toLocaleDateString()} />
                   {claim.followUpDate && (
                     <InfoRow label="Follow-up Date" value={new Date(claim.followUpDate).toLocaleDateString()} />
@@ -430,7 +452,12 @@ export default function ClaimDetailPage() {
                         <SelectItem value="paid">paid</SelectItem>
                       </SelectContent>
                     </Select>
-                    <PartialPaymentDialog claimId={claim._id} totalAmount={claim.amount} onDone={fetchClaim} />
+                    <PartialPaymentDialog 
+                      claimId={claim._id} 
+                      totalAmount={claim.amount} 
+                      currency={claim.currency}
+                      onDone={fetchClaim} 
+                    />
                     <RejectDialog claimId={claim._id} onDone={fetchClaim} />
                     <FollowUpDialog
                       claimId={claim._id}
@@ -454,11 +481,11 @@ export default function ClaimDetailPage() {
                 {claim.status === "paid" && (
                   <Select onValueChange={(val) => updateStatus(val)}>
                     <SelectTrigger className="w-36 h-8 text-sm border-dashed text-gray-400">
-                      <SelectValue placeholder="Correct ↩" />
+                      <SelectValue placeholder="Correct ↺" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="approved">↩ approved</SelectItem>
-                      <SelectItem value="pending">↩ pending</SelectItem>
+                      <SelectItem value="approved">↺ approved</SelectItem>
+                      <SelectItem value="pending">↺ pending</SelectItem>
                     </SelectContent>
                   </Select>
                 )}
@@ -467,12 +494,12 @@ export default function ClaimDetailPage() {
                 {claim.status === "partial" && (
                   <Select onValueChange={(val) => updateStatus(val)}>
                     <SelectTrigger className="w-36 h-8 text-sm border-dashed text-gray-400">
-                      <SelectValue placeholder="Correct ↩" />
+                      <SelectValue placeholder="Correct ↺" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="paid">→ paid (full)</SelectItem>
-                      <SelectItem value="approved">↩ approved</SelectItem>
-                      <SelectItem value="pending">↩ pending</SelectItem>
+                      <SelectItem value="approved">↺ approved</SelectItem>
+                      <SelectItem value="pending">↺ pending</SelectItem>
                     </SelectContent>
                   </Select>
                 )}
@@ -481,10 +508,10 @@ export default function ClaimDetailPage() {
                 {claim.status === "superseded" && (
                   <Select onValueChange={(val) => updateStatus(val)}>
                     <SelectTrigger className="w-36 h-8 text-sm border-dashed text-gray-400">
-                      <SelectValue placeholder="Correct ↩" />
+                      <SelectValue placeholder="Correct ↺" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="pending">↩ reactivate</SelectItem>
+                      <SelectItem value="pending">↺ reactivate</SelectItem>
                     </SelectContent>
                   </Select>
                 )}

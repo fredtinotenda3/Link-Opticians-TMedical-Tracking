@@ -8,7 +8,8 @@ export function exportToCSV(claims: any[], filename: string) {
     "Branch",
     "Service Date",
     "Submission Date",
-    "Amount (USD)",
+    "Currency",     // NEW
+    "Amount",
     "Status",
     "Days Outstanding",
     "Rejection Reason",
@@ -33,6 +34,7 @@ export function exportToCSV(claims: any[], filename: string) {
       c.branch,
       new Date(c.serviceDate).toLocaleDateString(),
       new Date(c.submissionDate).toLocaleDateString(),
+      c.currency || "USD",  // NEW
       c.amount.toFixed(2),
       c.status,
       days,
@@ -47,7 +49,6 @@ export function exportToCSV(claims: any[], filename: string) {
       row.map((cell) => `"${String(cell).replace(/"/g, '""')}"`).join(",")
     )
     .join("\n");
-
 
   const link = document.createElement("a");
   link.href = `data:text/csv;charset=utf-8,${encodeURIComponent(csvContent)}`;

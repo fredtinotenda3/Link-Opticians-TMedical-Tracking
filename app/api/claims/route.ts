@@ -12,6 +12,7 @@ export async function GET(req: NextRequest) {
     if (searchParams.get("status"))     filter.status     = searchParams.get("status");
     if (searchParams.get("medicalAid")) filter.medicalAid = searchParams.get("medicalAid");
     if (searchParams.get("branch"))     filter.branch     = searchParams.get("branch");
+    if (searchParams.get("currency"))   filter.currency   = searchParams.get("currency");
 
     const claims = await Claim.find(filter).sort({ submissionDate: -1 });
     return NextResponse.json({ success: true, data: claims });

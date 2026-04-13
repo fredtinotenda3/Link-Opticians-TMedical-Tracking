@@ -12,15 +12,16 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { formatUSD } from "@/lib/utils/claims";
+import { formatCurrency } from "@/lib/utils/currency";
 
 interface Props {
   claimId: string;
   totalAmount: number;
+  currency: "USD" | "ZWG";
   onDone: () => void;
 }
 
-export function PartialPaymentDialog({ claimId, totalAmount, onDone }: Props) {
+export function PartialPaymentDialog({ claimId, totalAmount, currency, onDone }: Props) {
   const [open, setOpen]       = useState(false);
   const [loading, setLoading] = useState(false);
   const [amountPaid, setAmountPaid] = useState("");
@@ -32,16 +33,25 @@ export function PartialPaymentDialog({ claimId, totalAmount, onDone }: Props) {
   async function handleSubmit() {
     if (!amountPaid || paid <= 0 || paid >= totalAmount) return;
     setLoading(true);
+    
+    const payload: any = {
+      status: "partial",
+      paidDate: new Date().toISOString(),
+      notes,
+    };
+    
+    if (currency === "USD") {
+      payload.partialAmountPaid = paid;
+    } else {
+      payload.partialAmountPaidZWG = paid;
+    }
+    
     await fetch(`/api/claims/${claimId}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        status: "partial",
-        partialAmountPaid: paid,
-        paidDate: new Date().toISOString(),
-        notes,
-      }),
+      body: JSON.stringify(payload),
     });
+    
     setLoading(false);
     setOpen(false);
     onDone();
@@ -60,26 +70,26 @@ export function PartialPaymentDialog({ claimId, totalAmount, onDone }: Props) {
           <div className="bg-gray-50 rounded-lg p-3 text-sm">
             <div className="flex justify-between">
               <span className="text-gray-500">Claim total</span>
-              <span className="font-semibold">{formatUSD(totalAmount)}</span>
+              <span className="font-semibold">{formatCurrency(totalAmount, currency)}</span>
             </div>
             {paid > 0 && (
               <>
                 <div className="flex justify-between mt-1">
                   <span className="text-gray-500">Amount paid</span>
-                  <span className="font-semibold text-green-600">{formatUSD(paid)}</span>
+                  <span className="font-semibold text-green-600">{formatCurrency(paid, currency)}</span>
                 </div>
                 <div className="flex justify-between mt-1 border-t pt-1">
                   <span className="text-gray-500">Balance written off</span>
-                  <span className="font-semibold text-red-500">{formatUSD(balance)}</span>
+                  <span className="font-semibold text-red-500">{formatCurrency(balance, currency)}</span>
                 </div>
               </>
             )}
           </div>
           <div className="space-y-1">
-            <Label>Amount Paid by Medical Aid (USD)</Label>
+            <Label>Amount Paid by Medical Aid ({currency})</Label>
             <Input
               type="number"
-              placeholder={`Less than ${formatUSD(totalAmount)}`}
+              placeholder={`Less than ${formatCurrency(totalAmount, currency)}`}
               value={amountPaid}
               onChange={(e) => setAmountPaid(e.target.value)}
             />
@@ -92,7 +102,7 @@ export function PartialPaymentDialog({ claimId, totalAmount, onDone }: Props) {
           <div className="space-y-1">
             <Label>Notes (optional)</Label>
             <Textarea
-              placeholder="e.g. PSMAS paid $80, balance $40 written off"
+              placeholder="e.g. PSMAS paid partial amount, balance to be written off"
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               rows={2}

@@ -10,6 +10,8 @@ export interface IClaim extends Document {
   serviceDate: Date;
   submissionDate: Date;
   amount: number;
+  currency: "USD" | "ZWG";  // NEW: Currency field
+  amountZWG?: number;        // NEW: Store ZWG amount if needed for conversion
   status: "pending" | "approved" | "rejected" | "paid" | "superseded" | "partial";
   rejectionReason?: string;
   paidDate?: Date;
@@ -19,6 +21,7 @@ export interface IClaim extends Document {
   resubmittedFrom?: mongoose.Types.ObjectId; 
   resubmissionCount?: number; 
   partialAmountPaid?: number;
+  partialAmountPaidZWG?: number;  // NEW: Partial payment in ZWG
   followUpDate?: Date;               
 }
 
@@ -33,7 +36,10 @@ const ClaimSchema = new Schema<IClaim>(
     serviceDate:     { type: Date,   required: true },
     submissionDate:  { type: Date,   required: true },
     amount:          { type: Number, required: true },
+    currency:        { type: String, enum: ["USD", "ZWG"], default: "USD", required: true },
+    amountZWG:       { type: Number },
     partialAmountPaid: { type: Number },
+    partialAmountPaidZWG: { type: Number },
     followUpDate:      { type: Date },
     status:          {
       type: String,

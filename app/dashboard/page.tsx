@@ -4,11 +4,21 @@
 
 import { useEffect, useState } from "react";
 import { getDaysOutstanding, formatUSD } from "@/lib/utils/claims";
+import { formatCurrency, getCurrencySymbol } from "@/lib/utils/currency";
 import Link from "next/link";
 import { isFollowUpDue } from "@/lib/utils/claims";
 import { useRouter } from "next/navigation";
+import { useCurrency } from "@/context/CurrencyContext";
+import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
-// ─── Types ────────────────────────────────────────────────────────────────────
+// ─── Types ───────────────────────────────────────────────────────────────
 interface Claim {
   _id: string;
   claimNumber: string;
@@ -16,6 +26,7 @@ interface Claim {
   medicalAid: string;
   branch: string;
   amount: number;
+  currency: "USD" | "ZWG";
   partialAmountPaid?: number;
   status: "pending" | "approved" | "paid" | "rejected" | "superseded" | "partial";
   submissionDate: string;
@@ -24,14 +35,14 @@ interface Claim {
   followUpDate?: string;
 }
 
-// ─── Clickable Stat Card ──────────────────────────────────────────────────────
+// ─── Clickable Stat Card ─────────────────────────────────────────────────
 function StatCard({
   label, sublabel, amount, count, countLabel,
-  accent, icon, hint, href,
+  accent, icon, hint, href, currency,
 }: {
   label: string; sublabel: string; amount: number; count: number;
   countLabel: string; accent: string; icon: string; hint: string;
-  href: string;
+  href: string; currency: "USD" | "ZWG";
 }) {
   return (
     <Link href={href}>
@@ -45,7 +56,7 @@ function StatCard({
             </div>
             <span className="text-xl">{icon}</span>
           </div>
-          <p className="mt-3 text-3xl font-bold text-gray-900 tabular-nums">{formatUSD(amount)}</p>
+          <p className="mt-3 text-3xl font-bold text-gray-900 tabular-nums">{formatCurrency(amount, currency)}</p>
           <div className="mt-2 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <span className="text-sm font-semibold text-gray-700">{count} {countLabel}</span>
@@ -60,14 +71,14 @@ function StatCard({
   );
 }
 
-// ─── Clickable Resolved Card ──────────────────────────────────────────────────
+// ─── Clickable Resolved Card ────────────────────────────────────────────
 function ResolvedCard({
   label, sublabel, amount, count, countLabel,
-  icon, accent, hint, href,
+  icon, accent, hint, href, currency,
 }: {
   label: string; sublabel: string; amount: number; count: number;
   countLabel: string; icon: string; accent: string; hint: string;
-  href: string;
+  href: string; currency: "USD" | "ZWG";
 }) {
   return (
     <Link href={href}>
@@ -81,7 +92,7 @@ function ResolvedCard({
             </div>
             <span className="text-xl">{icon}</span>
           </div>
-          <p className="mt-3 text-3xl font-bold text-gray-900 tabular-nums">{formatUSD(amount)}</p>
+          <p className="mt-3 text-3xl font-bold text-gray-900 tabular-nums">{formatCurrency(amount, currency)}</p>
           <div className="mt-2 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <span className="text-sm font-semibold text-gray-700">{count} {countLabel}</span>
@@ -96,17 +107,18 @@ function ResolvedCard({
   );
 }
 
-// ─── Clickable Aging Bar ──────────────────────────────────────────────────────
+// ─── Clickable Aging Bar ────────────────────────────────────────────────
 function AgingBar({
-  bucket0, bucket31, bucket60,
+  bucket0, bucket31, bucket60, currency,
 }: {
   bucket0: number; bucket31: number; bucket60: number;
+  currency: "USD" | "ZWG";
 }) {
   const total = bucket0 + bucket31 + bucket60 || 1;
   return (
     <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
       <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-4">
-        Aging Breakdown
+        Aging Breakdown ({currency})
       </p>
       <div className="flex rounded-full overflow-hidden h-3 gap-0.5">
         <div className="bg-emerald-400 transition-all" style={{ width: `${(bucket0 / total) * 100}%` }} />
@@ -119,11 +131,11 @@ function AgingBar({
           { label: "31–60 days", color: "bg-amber-400",   amount: bucket31, href: "/claims/category/warning"  },
           { label: "60+ days",   color: "bg-red-500",     amount: bucket60, href: "/claims/category/overdue"  },
         ].map((b) => (
-          <Link key={b.label} href={b.href}>
+          <Link key={b.label} href={`${b.href}?currency=${currency}`}>
             <div className="flex items-center gap-1.5 px-2 py-1 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer group">
               <span className={`w-2 h-2 rounded-full ${b.color}`} />
               <span className="text-xs text-gray-500">{b.label}</span>
-              <span className="text-xs font-semibold text-gray-800">{formatUSD(b.amount)}</span>
+              <span className="text-xs font-semibold text-gray-800">{formatCurrency(b.amount, currency)}</span>
               <span className="text-[10px] text-gray-300 group-hover:text-gray-400">→</span>
             </div>
           </Link>
@@ -133,34 +145,35 @@ function AgingBar({
   );
 }
 
-// ─── Clickable Medical Aid Table ──────────────────────────────────────────────
+// ─── Clickable Medical Aid Table ────────────────────────────────────────
 function MedicalAidTable({
-  data,
+  data, currency,
 }: {
   data: Record<string, { pending: number; approved: number; partial: number; total: number }>;
+  currency: "USD" | "ZWG";
 }) {
   const sorted = Object.entries(data).sort((a, b) => b[1].total - a[1].total);
   return (
     <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
       <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-4">
-        Outstanding by Medical Aid
+        Outstanding by Medical Aid ({currency})
       </p>
       {sorted.length === 0 ? (
-        <p className="text-sm text-gray-400">No outstanding claims</p>
+        <p className="text-sm text-gray-400">No outstanding claims in {currency}</p>
       ) : (
         <div className="space-y-3">
           {sorted.map(([aid, vals]) => {
             const pct = (vals.total / sorted[0][1].total) * 100;
             return (
-              <Link key={aid} href={`/claims/category/outstanding?aid=${encodeURIComponent(aid)}`}>
+              <Link key={aid} href={`/claims/category/outstanding?aid=${encodeURIComponent(aid)}&currency=${currency}`}>
                 <div className="group cursor-pointer hover:bg-gray-50 rounded-lg p-1 -mx-1 transition-colors">
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-sm font-medium text-gray-800 group-hover:text-gray-900">{aid}</span>
                     <div className="flex items-center gap-3">
-                      {vals.pending  > 0 && <span className="text-xs text-amber-600">{formatUSD(vals.pending)} pending</span>}
-                      {vals.approved > 0 && <span className="text-xs text-blue-600">{formatUSD(vals.approved)} approved</span>}
-                      {vals.partial  > 0 && <span className="text-xs text-orange-500">{formatUSD(vals.partial)} partial bal.</span>}
-                      <span className="text-sm font-bold text-gray-900">{formatUSD(vals.total)}</span>
+                      {vals.pending  > 0 && <span className="text-xs text-amber-600">{formatCurrency(vals.pending, currency)} pending</span>}
+                      {vals.approved > 0 && <span className="text-xs text-blue-600">{formatCurrency(vals.approved, currency)} approved</span>}
+                      {vals.partial  > 0 && <span className="text-xs text-orange-500">{formatCurrency(vals.partial, currency)} partial bal.</span>}
+                      <span className="text-sm font-bold text-gray-900">{formatCurrency(vals.total, currency)}</span>
                       <span className="text-xs text-gray-300 group-hover:text-gray-500">→</span>
                     </div>
                   </div>
@@ -177,16 +190,16 @@ function MedicalAidTable({
   );
 }
 
-// ─── Rejected List ────────────────────────────────────────────────────────────
-function RejectedTable({ claims }: { claims: Claim[] }) {
+// ─── Rejected List ──────────────────────────────────────────────────────
+function RejectedTable({ claims, currency }: { claims: Claim[]; currency: "USD" | "ZWG" }) {
   if (claims.length === 0) return null;
   return (
     <div className="bg-white rounded-2xl border border-red-100 shadow-sm p-5">
       <div className="flex items-center justify-between mb-4">
         <p className="text-xs font-semibold uppercase tracking-widest text-red-400">
-          ⚠️ Rejected — Action Required
+          ⚠️ Rejected — Action Required ({currency})
         </p>
-        <Link href="/claims/category/rejected">
+        <Link href={`/claims/category/rejected?currency=${currency}`}>
           <span className="text-xs text-blue-500 hover:underline cursor-pointer">View all →</span>
         </Link>
       </div>
@@ -202,7 +215,7 @@ function RejectedTable({ claims }: { claims: Claim[] }) {
                 )}
               </div>
               <div className="text-right">
-                <p className="text-sm font-bold text-gray-900">{formatUSD(c.amount)}</p>
+                <p className="text-sm font-bold text-gray-900">{formatCurrency(c.amount, currency)}</p>
                 <p className="text-xs text-blue-500">View →</p>
               </div>
             </div>
@@ -213,10 +226,11 @@ function RejectedTable({ claims }: { claims: Claim[] }) {
   );
 }
 
-// ─── Main Dashboard ───────────────────────────────────────────────────────────
+// ─── Main Dashboard ─────────────────────────────────────────────────────
 export default function DashboardPage() {
-  const [claims, setClaims]   = useState<Claim[]>([]);
+  const [claims, setClaims] = useState<Claim[]>([]);
   const [loading, setLoading] = useState(true);
+  const { currency, setCurrency } = useCurrency();
   const router = useRouter();
 
   useEffect(() => {
@@ -225,13 +239,16 @@ export default function DashboardPage() {
       .then((j) => { setClaims(j.data || []); setLoading(false); });
   }, []);
 
-  const pending  = claims.filter((c) => c.status === "pending");
-  const approved = claims.filter((c) => c.status === "approved");
-  const rejected = claims.filter((c) => c.status === "rejected");
-  const partial  = claims.filter((c) => c.status === "partial");
+  // Filter claims by selected currency
+  const currencyClaims = claims.filter(c => c.currency === currency);
+
+  const pending = currencyClaims.filter((c) => c.status === "pending");
+  const approved = currencyClaims.filter((c) => c.status === "approved");
+  const rejected = currencyClaims.filter((c) => c.status === "rejected");
+  const partial = currencyClaims.filter((c) => c.status === "partial");
 
   const now = new Date();
-  const paidMonth = claims.filter((c) => {
+  const paidMonth = currencyClaims.filter((c) => {
     if (c.status !== "paid" || !c.paidDate) return false;
     const d = new Date(c.paidDate);
     return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
@@ -247,7 +264,7 @@ export default function DashboardPage() {
 
   const totalOutstanding = sum(outstanding);
 
-  const bucket0  = outstanding.filter((c) => getDaysOutstanding(c.submissionDate) <= 30);
+  const bucket0 = outstanding.filter((c) => getDaysOutstanding(c.submissionDate) <= 30);
   const bucket31 = outstanding.filter((c) => { const d = getDaysOutstanding(c.submissionDate); return d > 30 && d <= 60; });
   const bucket60 = outstanding.filter((c) => getDaysOutstanding(c.submissionDate) > 60);
 
@@ -255,9 +272,9 @@ export default function DashboardPage() {
   outstanding.forEach((c) => {
     if (!byAid[c.medicalAid]) byAid[c.medicalAid] = { pending: 0, approved: 0, partial: 0, total: 0 };
     const eff = c.status === "partial" && c.partialAmountPaid ? c.amount - c.partialAmountPaid : c.amount;
-    if (c.status === "pending")  byAid[c.medicalAid].pending  += eff;
+    if (c.status === "pending") byAid[c.medicalAid].pending += eff;
     if (c.status === "approved") byAid[c.medicalAid].approved += eff;
-    if (c.status === "partial")  byAid[c.medicalAid].partial  += eff;
+    if (c.status === "partial") byAid[c.medicalAid].partial += eff;
     byAid[c.medicalAid].total += eff;
   });
 
@@ -272,7 +289,7 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-gray-50">
 
-      {/* Header */}
+      {/* Header with Currency Switcher */}
       <div className="bg-white border-b border-gray-100 px-6 py-5">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <div>
@@ -281,23 +298,37 @@ export default function DashboardPage() {
               Link Optical · {new Date().toLocaleDateString("en-ZW", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}
             </p>
           </div>
-          <Link href="/claims/new">
-            <button className="bg-gray-900 text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors">
-              + New Claim
-            </button>
-          </Link>
+          <div className="flex gap-3 items-center">
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-gray-500">Display:</span>
+              <Select value={currency} onValueChange={(v) => setCurrency(v as "USD" | "ZWG")}>
+                <SelectTrigger className="w-24 h-8">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="USD">USD</SelectItem>
+                  <SelectItem value="ZWG">ZWG</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <Link href="/claims/new">
+              <button className="bg-gray-900 text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors">
+                + New Claim
+              </button>
+            </Link>
+          </div>
         </div>
       </div>
 
       <div className="max-w-6xl mx-auto px-6 py-8 space-y-6">
 
         {/* Total Outstanding Banner — clickable */}
-        <Link href="/claims/category/outstanding">
+        <Link href={`/claims/category/outstanding?currency=${currency}`}>
           <div className="bg-gray-900 text-white rounded-2xl px-7 py-6 flex items-center justify-between hover:bg-gray-800 transition-colors cursor-pointer group">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-widest text-gray-400">Total Outstanding</p>
+              <p className="text-xs font-semibold uppercase tracking-widest text-gray-400">Total Outstanding ({currency})</p>
               <p className="text-[11px] text-gray-500 mt-0.5">Pending + Approved + Partial balances — click to drill down</p>
-              <p className="text-5xl font-bold mt-3 tabular-nums">{formatUSD(totalOutstanding)}</p>
+              <p className="text-5xl font-bold mt-3 tabular-nums">{formatCurrency(totalOutstanding, currency)}</p>
               <p className="text-sm text-gray-400 mt-2">
                 {outstanding.length} active claims across {Object.keys(byAid).length} medical aid{Object.keys(byAid).length !== 1 ? "s" : ""}
               </p>
@@ -305,16 +336,16 @@ export default function DashboardPage() {
             <div className="hidden md:flex flex-col items-end gap-2">
               <div className="flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-amber-400" />
-                <span className="text-xs text-gray-400">{pending.length} pending · {formatUSD(sum(pending))}</span>
+                <span className="text-xs text-gray-400">{pending.length} pending · {formatCurrency(sum(pending), currency)}</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-blue-400" />
-                <span className="text-xs text-gray-400">{approved.length} approved · {formatUSD(sum(approved))}</span>
+                <span className="text-xs text-gray-400">{approved.length} approved · {formatCurrency(sum(approved), currency)}</span>
               </div>
               {partial.length > 0 && (
                 <div className="flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-orange-400" />
-                  <span className="text-xs text-gray-400">{partial.length} partial bal. · {formatUSD(sum(partial))}</span>
+                  <span className="text-xs text-gray-400">{partial.length} partial bal. · {formatCurrency(sum(partial), currency)}</span>
                 </div>
               )}
               <div className="flex items-center gap-2">
@@ -335,40 +366,49 @@ export default function DashboardPage() {
             <StatCard
               label="Pending" sublabel="Submitted to 263, awaiting response"
               amount={sum(pending)} count={pending.length} countLabel="claims"
-              accent="bg-amber-400" icon="🕐" hint="263 has not yet responded"
-              href="/claims/category/pending"
+              accent="bg-amber-400" icon="🕒" hint="263 has not yet responded"
+              href={`/claims/category/pending?currency=${currency}`}
+              currency={currency}
             />
             <StatCard
               label="Approved" sublabel="263 approved — waiting for payment"
               amount={sum(approved)} count={approved.length} countLabel="claims"
               accent="bg-blue-400" icon="✅" hint="Medical aid owes this money"
-              href="/claims/category/approved"
+              href={`/claims/category/approved?currency=${currency}`}
+              currency={currency}
             />
             <StatCard
               label="Partial Balance" sublabel="Partially paid — balance still owed"
               amount={sum(partial)} count={partial.length} countLabel="claims"
               accent="bg-orange-400" icon="⚡" hint="Balance after partial payment"
-              href="/claims/category/partial"
+              href={`/claims/category/partial?currency=${currency}`}
+              currency={currency}
             />
             <StatCard
               label="Overdue 60+ Days" sublabel="Outstanding over 60 days"
               amount={sum(bucket60)} count={bucket60.length} countLabel="claims"
               accent="bg-red-500" icon="⚠️" hint="Chase today"
-              href="/claims/category/overdue"
+              href={`/claims/category/overdue?currency=${currency}`}
+              currency={currency}
             />
           </div>
         </div>
 
         {/* Row 2: Aging + Medical Aid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <AgingBar bucket0={sum(bucket0)} bucket31={sum(bucket31)} bucket60={sum(bucket60)} />
-          <MedicalAidTable data={byAid} />
+          <AgingBar 
+            bucket0={sum(bucket0)} 
+            bucket31={sum(bucket31)} 
+            bucket60={sum(bucket60)} 
+            currency={currency}
+          />
+          <MedicalAidTable data={byAid} currency={currency} />
         </div>
 
         {/* Row 3: Resolved */}
         <div>
           <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-3">
-            Resolved This Month
+            Resolved This Month ({currency})
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <ResolvedCard
@@ -377,7 +417,8 @@ export default function DashboardPage() {
               amount={paidMonth.reduce((s, c) => s + c.amount, 0)}
               count={paidMonth.length} countLabel="claims paid"
               icon="💰" accent="bg-emerald-500" hint="Revenue collected and confirmed"
-              href="/claims/category/paid"
+              href={`/claims/category/paid?currency=${currency}`}
+              currency={currency}
             />
             <ResolvedCard
               label="Rejected" sublabel="Declined by 263 — needs resubmission"
@@ -385,7 +426,8 @@ export default function DashboardPage() {
               count={rejected.length} countLabel="claims rejected"
               icon="❌" accent="bg-red-400"
               hint={rejected.length > 0 ? "Action needed — resubmit" : "All clear"}
-              href="/claims/category/rejected"
+              href={`/claims/category/rejected?currency=${currency}`}
+              currency={currency}
             />
           </div>
         </div>
@@ -399,13 +441,13 @@ export default function DashboardPage() {
               <div className="flex items-center justify-between mb-3">
                 <div>
                   <p className="text-sm font-semibold text-orange-800">
-                    ⏰ {dueNow.length} claim{dueNow.length !== 1 ? "s" : ""} need follow-up today
+                    ⏰ {dueNow.length} claim{dueNow.length !== 1 ? "s" : ""} need follow-up today ({currency})
                   </p>
                   <p className="text-xs text-orange-500 mt-0.5">
                     These claims passed their 30-day follow-up date — chase the medical aid
                   </p>
                 </div>
-                <Link href="/claims/category/followup">
+                <Link href={`/claims/category/followup?currency=${currency}`}>
                   <button className="text-xs text-orange-700 border border-orange-300 px-3 py-1.5 rounded-lg hover:bg-orange-100 transition-colors">
                     View all →
                   </button>
@@ -422,8 +464,8 @@ export default function DashboardPage() {
                       <div className="text-right">
                         <p className="text-sm font-bold text-gray-900">
                           {c.status === "partial" && c.partialAmountPaid
-                            ? formatUSD(c.amount - c.partialAmountPaid)
-                            : formatUSD(c.amount)}
+                            ? formatCurrency(c.amount - c.partialAmountPaid, currency)
+                            : formatCurrency(c.amount, currency)}
                         </p>
                         {c.status === "partial" && (
                           <p className="text-[10px] text-orange-500">balance remaining</p>
@@ -441,16 +483,16 @@ export default function DashboardPage() {
         })()}
 
         {/* Rejected Action List */}
-        {rejected.length > 0 && <RejectedTable claims={rejected} />}
+        {rejected.length > 0 && <RejectedTable claims={rejected} currency={currency} />}
 
         {/* Footer Nav */}
         <div className="flex gap-3 pt-2">
-          <Link href="/claims">
+          <Link href={`/claims?currency=${currency}`}>
             <button className="text-sm text-gray-600 border border-gray-200 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors">
               View All Claims →
             </button>
           </Link>
-          <Link href="/claims/category/rejected">
+          <Link href={`/claims/category/rejected?currency=${currency}`}>
             <button className="text-sm text-red-600 border border-red-100 px-4 py-2 rounded-lg hover:bg-red-50 transition-colors">
               View Rejected →
             </button>

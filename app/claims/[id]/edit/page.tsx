@@ -14,7 +14,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { MEDICAL_AIDS, BRANCHES } from "@/lib/constants";
+import { MEDICAL_AIDS, BRANCHES, CURRENCIES } from "@/lib/constants";
 
 export default function EditClaimPage() {
   const router    = useRouter();
@@ -32,6 +32,7 @@ export default function EditClaimPage() {
           ...c,
           serviceDate:    c.serviceDate?.split("T")[0] || "",
           submissionDate: c.submissionDate?.split("T")[0] || "",
+          currency:       c.currency || "USD",
         });
         setFetching(false);
       });
@@ -43,10 +44,18 @@ export default function EditClaimPage() {
 
   async function handleSave() {
     setLoading(true);
+    const payload: any = { ...form };
+    if (form.currency === "USD") {
+      payload.amount = parseFloat(form.amount);
+      payload.amountZWG = undefined;
+    } else {
+      payload.amountZWG = parseFloat(form.amount);
+      payload.amount = 0;
+    }
     await fetch(`/api/claims/${id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...form, amount: parseFloat(form.amount) }),
+      body: JSON.stringify(payload),
     });
     router.push("/claims");
   }
@@ -66,8 +75,25 @@ export default function EditClaimPage() {
               <Input value={form.claimNumber} onChange={(e) => set("claimNumber", e.target.value)} />
             </div>
             <div className="space-y-1">
-              <Label>Amount (USD)</Label>
-              <Input type="number" value={form.amount} onChange={(e) => set("amount", e.target.value)} />
+              <Label>Currency</Label>
+              <Select onValueChange={(v) => set("currency", v)} defaultValue={form.currency}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select currency" />
+                </SelectTrigger>
+                <SelectContent>
+                  {CURRENCIES.map((c) => (
+                    <SelectItem key={c} value={c}>{c}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-1">
+              <Label>Amount ({form.currency})</Label>
+              <Input 
+                type="number" 
+                value={form.amount} 
+                onChange={(e) => set("amount", e.target.value)} 
+              />
             </div>
             <div className="space-y-1">
               <Label>Patient Name</Label>

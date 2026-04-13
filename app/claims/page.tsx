@@ -3,7 +3,7 @@
 import { PartialPaymentDialog } from "@/components/claims/PartialPaymentDialog";
 import { FollowUpDialog } from "@/components/claims/FollowUpDialog";
 import { isFollowUpDue } from "@/lib/utils/claims";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react"; // Add Suspense
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -22,12 +22,15 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { MEDICAL_AIDS, BRANCHES, STATUSES } from "@/lib/constants";
-import { getDaysOutstanding, getAgingBucket, formatUSD } from "@/lib/utils/claims";
+import { getDaysOutstanding, getAgingBucket } from "@/lib/utils/claims";
+import { formatCurrency } from "@/lib/utils/currency";
 import Link from "next/link";
 import { RejectDialog } from "@/components/claims/RejectDialog";
 import { ResubmitDialog } from "@/components/claims/ResubmitDialog";
 import { exportToCSV } from "@/lib/utils/export";
 import { DeleteDialog } from "@/components/claims/DeleteDialog";
+import { useCurrency } from "@/context/CurrencyContext";
+import { useSearchParams } from "next/navigation";
 
 const STATUS_COLORS: Record<string, string> = {
   pending:    "bg-yellow-100 text-yellow-800",
@@ -44,13 +47,16 @@ const AGING_COLORS: Record<string, string> = {
   critical: "text-red-600 font-bold",
 };
 
-export default function ClaimsPage() {
-  const [claims, setClaims]       = useState<any[]>([]);
-  const [loading, setLoading]     = useState(true);
+// Inner component that uses useSearchParams
+function ClaimsContent() {
+  const [claims, setClaims] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   const [statusFilter, setStatus] = useState("all");
-  const [aidFilter, setAid]       = useState("all");
+  const [aidFilter, setAid] = useState("all");
   const [branchFilter, setBranch] = useState("all");
-  const [search, setSearch]       = useState("");
+  const [search, setSearch] = useState("");
+  const { currency } = useCurrency();
+  const searchParams = useSearchParams();
 
   async function fetchClaims() {
     setLoading(true);
@@ -58,13 +64,14 @@ export default function ClaimsPage() {
     if (statusFilter !== "all") params.set("status", statusFilter);
     if (aidFilter !== "all")    params.set("medicalAid", aidFilter);
     if (branchFilter !== "all") params.set("branch", branchFilter);
+    params.set("currency", currency);
     const res  = await fetch(`/api/claims?${params.toString()}`);
     const json = await res.json();
     setClaims(json.data || []);
     setLoading(false);
   }
 
-  useEffect(() => { fetchClaims(); }, [statusFilter, aidFilter, branchFilter]);
+  useEffect(() => { fetchClaims(); }, [statusFilter, aidFilter, branchFilter, currency]);
 
   const filtered = claims.filter((c) =>
     search === "" ||
@@ -86,13 +93,13 @@ export default function ClaimsPage() {
   return (
     <div className="p-6 space-y-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Claims Tracker</h1>
+        <h1 className="text-2xl font-bold">Claims Tracker ({currency})</h1>
         <div className="flex gap-2">
           <Button
             variant="outline"
             onClick={() => {
               const date = new Date().toISOString().split("T")[0];
-              exportToCSV(filtered, `link-optical-claims-${date}.csv`);
+              exportToCSV(filtered, `link-optical-claims-${currency}-${date}.csv`);
             }}
           >
             Export CSV
@@ -145,7 +152,7 @@ export default function ClaimsPage() {
               <TableHead>Patient</TableHead>
               <TableHead>Medical Aid</TableHead>
               <TableHead>Branch</TableHead>
-              <TableHead>Amount</TableHead>
+              <TableHead>Amount ({currency})</TableHead>
               <TableHead>Submitted</TableHead>
               <TableHead>Days Out</TableHead>
               <TableHead>Status</TableHead>
@@ -171,7 +178,7 @@ export default function ClaimsPage() {
                     <div>
                       <p>{claim.patientName}</p>
                       {isDue && (
-                        <p className="text-[10px] text-orange-500 font-semibold">⏰ Follow-up due</p>
+                        <p className="text-[10px] text-orange-500 font-semibold">⚠ Follow-up due</p>
                       )}
                     </div>
                   </TableCell>
@@ -181,14 +188,14 @@ export default function ClaimsPage() {
 
                   <TableCell>
                     <div>
-                      <p>{formatUSD(claim.amount)}</p>
+                      <p>{formatCurrency(claim.amount, currency)}</p>
                       {claim.partialAmountPaid && (
                         <>
                           <p className="text-[10px] text-green-600">
-                            Paid: {formatUSD(claim.partialAmountPaid)}
+                            Paid: {formatCurrency(claim.partialAmountPaid, currency)}
                           </p>
                           <p className="text-[10px] text-orange-500 font-semibold">
-                            Bal: {formatUSD(claim.amount - claim.partialAmountPaid)}
+                            Bal: {formatCurrency(claim.amount - claim.partialAmountPaid, currency)}
                           </p>
                         </>
                       )}
@@ -207,7 +214,6 @@ export default function ClaimsPage() {
                   <TableCell>
                     <div className="flex gap-1 items-center flex-wrap">
 
-                      {/* ── Pending or Approved — full workflow ── */}
                       {(claim.status === "pending" || claim.status === "approved") && (
                         <>
                           <Select onValueChange={(val) => updateStatus(claim._id, val)}>
@@ -223,6 +229,7 @@ export default function ClaimsPage() {
                           <PartialPaymentDialog
                             claimId={claim._id}
                             totalAmount={claim.amount}
+                            currency={currency}
                             onDone={fetchClaims}
                           />
                           <RejectDialog claimId={claim._id} onDone={fetchClaims} />
@@ -235,7 +242,6 @@ export default function ClaimsPage() {
                         </>
                       )}
 
-                      {/* ── Rejected — resubmit ── */}
                       {claim.status === "rejected" && (
                         <ResubmitDialog
                           claimId={claim._id}
@@ -244,47 +250,43 @@ export default function ClaimsPage() {
                         />
                       )}
 
-                      {/* ── Paid — only logical corrections ── */}
                       {claim.status === "paid" && (
                         <Select onValueChange={(val) => updateStatus(claim._id, val)}>
                           <SelectTrigger className="w-32 h-7 text-xs border-dashed text-gray-400">
-                            <SelectValue placeholder="Correct ↩" />
+                            <SelectValue placeholder="Correct ↺" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="approved">↩ approved</SelectItem>
-                            <SelectItem value="pending">↩ pending</SelectItem>
+                            <SelectItem value="approved">↺ approved</SelectItem>
+                            <SelectItem value="pending">↺ pending</SelectItem>
                           </SelectContent>
                         </Select>
                       )}
 
-                      {/* ── Partial — can promote to paid or revert ── */}
                       {claim.status === "partial" && (
                         <Select onValueChange={(val) => updateStatus(claim._id, val)}>
                           <SelectTrigger className="w-32 h-7 text-xs border-dashed text-gray-400">
-                            <SelectValue placeholder="Correct ↩" />
+                            <SelectValue placeholder="Correct ↺" />
                           </SelectTrigger>
                           <SelectContent>
                             <SelectItem value="paid">→ paid (full)</SelectItem>
-                            <SelectItem value="approved">↩ approved</SelectItem>
-                            <SelectItem value="pending">↩ pending</SelectItem>
+                            <SelectItem value="approved">↺ approved</SelectItem>
+                            <SelectItem value="pending">↺ pending</SelectItem>
                           </SelectContent>
                         </Select>
                       )}
 
-                      {/* ── Superseded — reactivate only ── */}
                       {claim.status === "superseded" && (
                         <Select onValueChange={(val) => updateStatus(claim._id, val)}>
                           <SelectTrigger className="w-32 h-7 text-xs border-dashed text-gray-400">
-                            <SelectValue placeholder="Correct ↩" />
+                            <SelectValue placeholder="Correct ↺" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="pending">↩ reactivate</SelectItem>
+                            <SelectItem value="pending">↺ reactivate</SelectItem>
                           </SelectContent>
                         </Select>
                       )}
 
-                      {/* ── Always available ── */}
-                      <Link href={`/claims/${claim._id}/edit`}>
+                      <Link href={`/claims/${claim._id}/edit?currency=${currency}`}>
                         <Button variant="ghost" size="sm">Edit</Button>
                       </Link>
                       <DeleteDialog
@@ -301,7 +303,7 @@ export default function ClaimsPage() {
             {filtered.length === 0 && (
               <TableRow>
                 <TableCell colSpan={9} className="text-center text-muted-foreground py-8">
-                  No claims found
+                  No {currency} claims found
                 </TableCell>
               </TableRow>
             )}
@@ -309,5 +311,14 @@ export default function ClaimsPage() {
         </Table>
       )}
     </div>
+  );
+}
+
+// Main export with Suspense boundary
+export default function ClaimsPage() {
+  return (
+    <Suspense fallback={<div className="p-6 text-center">Loading claims...</div>}>
+      <ClaimsContent />
+    </Suspense>
   );
 }
