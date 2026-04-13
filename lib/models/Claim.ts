@@ -1,3 +1,5 @@
+// FILE: lib/models/Claim.ts
+
 import mongoose, { Schema, Document, Model } from "mongoose";
 
 export interface IClaim extends Document {
@@ -10,8 +12,8 @@ export interface IClaim extends Document {
   serviceDate: Date;
   submissionDate: Date;
   amount: number;
-  currency: "USD" | "ZWG";  // NEW: Currency field
-  amountZWG?: number;        // NEW: Store ZWG amount if needed for conversion
+  currency: "USD" | "ZWG";
+  amountZWG?: number;
   status: "pending" | "approved" | "rejected" | "paid" | "superseded" | "partial";
   rejectionReason?: string;
   paidDate?: Date;
@@ -21,7 +23,7 @@ export interface IClaim extends Document {
   resubmittedFrom?: mongoose.Types.ObjectId; 
   resubmissionCount?: number; 
   partialAmountPaid?: number;
-  partialAmountPaidZWG?: number;  // NEW: Partial payment in ZWG
+  partialAmountPaidZWG?: number;
   followUpDate?: Date;               
 }
 
@@ -54,6 +56,14 @@ const ClaimSchema = new Schema<IClaim>(
   },
   { timestamps: true }
 );
+
+// Add a virtual field to get the display amount based on currency
+ClaimSchema.virtual('displayAmount').get(function() {
+  if (this.currency === 'ZWG' && this.amountZWG) {
+    return this.amountZWG;
+  }
+  return this.amount;
+});
 
 const Claim: Model<IClaim> =
   mongoose.models.Claim || mongoose.model<IClaim>("Claim", ClaimSchema);
