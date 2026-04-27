@@ -1,0 +1,2653 @@
+﻿
+==== FILE: C:\Users\user\Desktop\Link-Opticians-TMedical-Tracking\app\globals.css ====
+
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-sans);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+}
+
+==== FILE: C:\Users\user\Desktop\Link-Opticians-TMedical-Tracking\app\layout.tsx ====
+
+import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
+import "./globals.css";
+import { AppShell } from "@/components/layout/AppShell";
+import { CurrencyProvider } from "@/context/CurrencyContext";
+
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+export const metadata: Metadata = {
+  title: "Link Optical â€” Claims Tracker",
+  description: "Medical aid claims management for Link Optical",
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html
+      lang="en"
+      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+    >
+      <body className="h-full">
+        <CurrencyProvider>
+          <AppShell>{children}</AppShell>
+        </CurrencyProvider>
+      </body>
+    </html>
+  );
+}
+
+==== FILE: C:\Users\user\Desktop\Link-Opticians-TMedical-Tracking\app\page.tsx ====
+
+import { redirect } from "next/navigation";
+
+export default function RootPage() {
+  redirect("/dashboard");
+}
+// ```
+
+// ---
+
+// ## What you now have
+// ```
+// â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+// â”‚  ðŸ‘ï¸ Link    â”‚                                  â”‚
+// â”‚  Optical    â”‚     /dashboard                   â”‚
+// â”‚  â”€â”€â”€â”€â”€â”€â”€â”€â”€  â”‚     /claims                      â”‚
+// â”‚  ðŸ“Š Dash    â”‚     /claims/new                  â”‚
+// â”‚  ðŸ—‚ï¸ Claims  â”‚     /claims/[id]/edit            â”‚
+// â”‚  âž• New     â”‚                                  â”‚
+// â”‚             â”‚                                  â”‚
+// â”‚  â† Collapse â”‚                                  â”‚
+// â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+// ```
+
+// Collapsed state:
+// ```
+// â”Œâ”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+// â”‚ ðŸ‘ï¸ â”‚                                         â”‚
+// â”‚ â”€â”€ â”‚                                         â”‚
+// â”‚ ðŸ“Š â”‚                                         â”‚
+// â”‚ ðŸ—‚ï¸ â”‚                                         â”‚
+// â”‚ âž• â”‚                                         â”‚
+// â”‚    â”‚                                         â”‚
+// â”‚ â†’  â”‚                                         â”‚
+// â””â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+
+==== FILE: C:\Users\user\Desktop\Link-Opticians-TMedical-Tracking\app\api\claims\route.ts ====
+
+// FILE: app/api/claims/route.ts
+
+import { NextRequest, NextResponse } from "next/server";
+import { connectDB } from "@/lib/mongodb";
+import Claim from "@/lib/models/Claim";
+
+// GET all claims
+export async function GET(req: NextRequest) {
+  try {
+    await connectDB();
+    const { searchParams } = new URL(req.url);
+
+    const filter: any = {};
+    if (searchParams.get("status"))     filter.status     = searchParams.get("status");
+    if (searchParams.get("medicalAid")) filter.medicalAid = searchParams.get("medicalAid");
+    if (searchParams.get("branch"))     filter.branch     = searchParams.get("branch");
+    if (searchParams.get("currency"))   filter.currency   = searchParams.get("currency");
+
+    const claims = await Claim.find(filter).sort({ submissionDate: -1 });
+    
+    // Transform claims to include the correct amount for display
+    const transformedClaims = claims.map(claim => {
+      const claimObj = claim.toObject();
+      // For ZWG claims, use amountZWG as the main amount for display
+      if (claimObj.currency === 'ZWG' && claimObj.amountZWG) {
+        claimObj.amount = claimObj.amountZWG;
+      }
+      return claimObj;
+    });
+    
+    return NextResponse.json({ success: true, data: transformedClaims });
+  } catch (error) {
+    return NextResponse.json({ success: false, error: "Failed to fetch claims" }, { status: 500 });
+  }
+}
+
+// POST new claim
+export async function POST(req: NextRequest) {
+  try {
+    await connectDB();
+    const body = await req.json();
+    
+    // Ensure proper amount handling based on currency
+    const claimData = { ...body };
+    if (claimData.currency === 'ZWG') {
+      // For ZWG claims, store amount in amountZWG and set amount to 0 or keep it for reference
+      claimData.amountZWG = claimData.amount;
+      claimData.amount = 0; // Don't use the amount field for ZWG
+    } else {
+      // For USD claims, ensure amountZWG is undefined
+      claimData.amountZWG = undefined;
+    }
+    
+    const claim = await Claim.create(claimData);
+    
+    // Transform response for consistency
+    const responseClaim = claim.toObject();
+    if (responseClaim.currency === 'ZWG' && responseClaim.amountZWG) {
+      responseClaim.amount = responseClaim.amountZWG;
+    }
+    
+    return NextResponse.json({ success: true, data: responseClaim }, { status: 201 });
+  } catch (error) {
+    console.error('Error creating claim:', error);
+    return NextResponse.json({ success: false, error: "Failed to create claim" }, { status: 500 });
+  }
+}
+
+==== FILE: C:\Users\user\Desktop\Link-Opticians-TMedical-Tracking\app\api\claims\[id]\route.ts ====
+
+// FILE: app/api/claims/[id]/route.ts
+
+import { NextRequest, NextResponse } from "next/server";
+import { connectDB } from "@/lib/mongodb";
+import Claim from "@/lib/models/Claim";
+
+// PATCH â€” update status, paidDate, rejectionReason
+export async function PATCH(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    await connectDB();
+    const { id } = await params;
+    const body = await req.json();
+    
+    // Handle amount updates based on currency
+    if (body.currency === 'ZWG' && body.amount) {
+      body.amountZWG = body.amount;
+      body.amount = 0;
+    } else if (body.currency === 'USD' && body.amount) {
+      body.amountZWG = undefined;
+    }
+    
+    const claim = await Claim.findByIdAndUpdate(id, body, { new: true });
+    if (!claim) {
+      return NextResponse.json({ success: false, error: "Claim not found" }, { status: 404 });
+    }
+    
+    // Transform response
+    const responseClaim = claim.toObject();
+    if (responseClaim.currency === 'ZWG' && responseClaim.amountZWG) {
+      responseClaim.amount = responseClaim.amountZWG;
+    }
+    
+    return NextResponse.json({ success: true, data: responseClaim });
+  } catch (error) {
+    return NextResponse.json({ success: false, error: "Failed to update claim" }, { status: 500 });
+  }
+}
+
+// DELETE
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    await connectDB();
+    const { id } = await params;
+    await Claim.findByIdAndDelete(id);
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    return NextResponse.json({ success: false, error: "Failed to delete claim" }, { status: 500 });
+  }
+}
+
+// GET
+export async function GET(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    await connectDB();
+    const { id } = await params;
+    const claim = await Claim.findById(id);
+    if (!claim) {
+      return NextResponse.json({ success: false, error: "Not found" }, { status: 404 });
+    }
+    
+    // Transform response
+    const responseClaim = claim.toObject();
+    if (responseClaim.currency === 'ZWG' && responseClaim.amountZWG) {
+      responseClaim.amount = responseClaim.amountZWG;
+    }
+    
+    return NextResponse.json({ success: true, data: responseClaim });
+  } catch (error) {
+    return NextResponse.json({ success: false, error: "Failed to fetch claim" }, { status: 500 });
+  }
+}
+
+==== FILE: C:\Users\user\Desktop\Link-Opticians-TMedical-Tracking\app\api\claims\[id]\resubmit\route.ts ====
+
+// FILE: app/api/claims/[id]/resubmit/route.ts
+
+import { NextRequest, NextResponse } from "next/server";
+import { connectDB } from "@/lib/mongodb";
+import Claim from "@/lib/models/Claim";
+
+export async function POST(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    await connectDB();
+
+    const { id } = await params;
+    const original = await Claim.findById(id);
+    if (!original) {
+      return NextResponse.json({ success: false, error: "Claim not found" }, { status: 404 });
+    }
+
+    if (original.status !== "rejected") {
+      return NextResponse.json(
+        { success: false, error: "Only rejected claims can be resubmitted" },
+        { status: 400 }
+      );
+    }
+
+    const body = await req.json(); // { claimNumber, submissionDate, notes }
+
+    // Create new claim linked to original, preserving currency and amount
+    const resubmittedData: any = {
+      claimNumber:       body.claimNumber,
+      patientName:       original.patientName,
+      patientId:         original.patientId,
+      medicalAid:        original.medicalAid,
+      memberNumber:      original.memberNumber,
+      branch:            original.branch,
+      serviceDate:       original.serviceDate,
+      submissionDate:    body.submissionDate || new Date(),
+      currency:          original.currency,
+      status:            "pending",
+      notes:             body.notes || "",
+      resubmittedFrom:   original._id,
+      resubmissionCount: (original.resubmissionCount || 0) + 1,
+    };
+    
+    // Handle amount based on original currency
+    if (original.currency === 'ZWG') {
+      resubmittedData.amountZWG = original.amountZWG || original.amount;
+      resubmittedData.amount = 0;
+    } else {
+      resubmittedData.amount = original.amount;
+      resubmittedData.amountZWG = undefined;
+    }
+
+    const resubmitted = await Claim.create(resubmittedData);
+
+    // Mark original as superseded
+    await Claim.findByIdAndUpdate(id, { status: "superseded" });
+
+    // Transform response
+    const responseClaim = resubmitted.toObject();
+    if (responseClaim.currency === 'ZWG' && responseClaim.amountZWG) {
+      responseClaim.amount = responseClaim.amountZWG;
+    }
+
+    return NextResponse.json({ success: true, data: responseClaim }, { status: 201 });
+  } catch (error) {
+    console.error('Resubmission error:', error);
+    return NextResponse.json(
+      { success: false, error: "Resubmission failed" },
+      { status: 500 }
+    );
+  }
+}
+
+==== FILE: C:\Users\user\Desktop\Link-Opticians-TMedical-Tracking\app\claims\page.tsx ====
+
+"use client";
+
+import { PartialPaymentDialog } from "@/components/claims/PartialPaymentDialog";
+import { FollowUpDialog } from "@/components/claims/FollowUpDialog";
+import { isFollowUpDue } from "@/lib/utils/claims";
+import { useEffect, useState, Suspense } from "react"; // Add Suspense
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { MEDICAL_AIDS, BRANCHES, STATUSES } from "@/lib/constants";
+import { getDaysOutstanding, getAgingBucket } from "@/lib/utils/claims";
+import { formatCurrency } from "@/lib/utils/currency";
+import Link from "next/link";
+import { RejectDialog } from "@/components/claims/RejectDialog";
+import { ResubmitDialog } from "@/components/claims/ResubmitDialog";
+import { exportToCSV } from "@/lib/utils/export";
+import { DeleteDialog } from "@/components/claims/DeleteDialog";
+import { useCurrency } from "@/context/CurrencyContext";
+import { useSearchParams } from "next/navigation";
+
+const STATUS_COLORS: Record<string, string> = {
+  pending:    "bg-yellow-100 text-yellow-800",
+  approved:   "bg-blue-100 text-blue-800",
+  rejected:   "bg-red-100 text-red-800",
+  paid:       "bg-green-100 text-green-800",
+  partial:    "bg-orange-100 text-orange-800",
+  superseded: "bg-gray-100 text-gray-400 line-through",
+};
+
+const AGING_COLORS: Record<string, string> = {
+  current:  "text-green-600",
+  warning:  "text-yellow-600 font-semibold",
+  critical: "text-red-600 font-bold",
+};
+
+// Inner component that uses useSearchParams
+function ClaimsContent() {
+  const [claims, setClaims] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [statusFilter, setStatus] = useState("all");
+  const [aidFilter, setAid] = useState("all");
+  const [branchFilter, setBranch] = useState("all");
+  const [search, setSearch] = useState("");
+  const { currency } = useCurrency();
+  const searchParams = useSearchParams();
+
+  async function fetchClaims() {
+    setLoading(true);
+    const params = new URLSearchParams();
+    if (statusFilter !== "all") params.set("status", statusFilter);
+    if (aidFilter !== "all")    params.set("medicalAid", aidFilter);
+    if (branchFilter !== "all") params.set("branch", branchFilter);
+    params.set("currency", currency);
+    const res  = await fetch(`/api/claims?${params.toString()}`);
+    const json = await res.json();
+    setClaims(json.data || []);
+    setLoading(false);
+  }
+
+  useEffect(() => { fetchClaims(); }, [statusFilter, aidFilter, branchFilter, currency]);
+
+  const filtered = claims.filter((c) =>
+    search === "" ||
+    c.patientName.toLowerCase().includes(search.toLowerCase()) ||
+    c.claimNumber.toLowerCase().includes(search.toLowerCase())
+  );
+
+  async function updateStatus(id: string, status: string) {
+    const body: any = { status };
+    if (status === "paid") body.paidDate = new Date().toISOString();
+    await fetch(`/api/claims/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    fetchClaims();
+  }
+
+  return (
+    <div className="p-6 space-y-4">
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold">Claims Tracker ({currency})</h1>
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            onClick={() => {
+              const date = new Date().toISOString().split("T")[0];
+              exportToCSV(filtered, `link-optical-claims-${currency}-${date}.csv`);
+            }}
+          >
+            Export CSV
+          </Button>
+          <Link href="/claims/new">
+            <Button>+ New Claim</Button>
+          </Link>
+        </div>
+      </div>
+
+      {/* Filters */}
+      <div className="flex gap-3 flex-wrap">
+        <Input
+          placeholder="Search patient or claim #"
+          className="w-60"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <Select onValueChange={setStatus} defaultValue="all">
+          <SelectTrigger className="w-40"><SelectValue placeholder="Status" /></SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Statuses</SelectItem>
+            {STATUSES.map((s) => <SelectItem key={s} value={s}>{s}</SelectItem>)}
+          </SelectContent>
+        </Select>
+        <Select onValueChange={setAid} defaultValue="all">
+          <SelectTrigger className="w-44"><SelectValue placeholder="Medical Aid" /></SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Medical Aids</SelectItem>
+            {MEDICAL_AIDS.map((a) => <SelectItem key={a} value={a}>{a}</SelectItem>)}
+          </SelectContent>
+        </Select>
+        <Select onValueChange={setBranch} defaultValue="all">
+          <SelectTrigger className="w-44"><SelectValue placeholder="Branch" /></SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Branches</SelectItem>
+            {BRANCHES.map((b) => <SelectItem key={b} value={b}>{b}</SelectItem>)}
+          </SelectContent>
+        </Select>
+      </div>
+
+      {/* Table */}
+      {loading ? (
+        <p className="text-muted-foreground">Loading...</p>
+      ) : (
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Claim #</TableHead>
+              <TableHead>Patient</TableHead>
+              <TableHead>Medical Aid</TableHead>
+              <TableHead>Branch</TableHead>
+              <TableHead>Amount ({currency})</TableHead>
+              <TableHead>Submitted</TableHead>
+              <TableHead>Days Out</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Action</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {filtered.map((claim) => {
+              const days   = getDaysOutstanding(claim.submissionDate, claim.paidDate);
+              const bucket = getAgingBucket(days);
+              const isDue  =
+                (claim.status === "pending" || claim.status === "approved" || claim.status === "partial") &&
+                isFollowUpDue(claim.submissionDate, claim.followUpDate);
+
+              return (
+                <TableRow
+                  key={claim._id}
+                  className={isDue ? "bg-orange-50 border-l-2 border-l-orange-400" : ""}
+                >
+                  <TableCell className="font-mono text-sm">{claim.claimNumber}</TableCell>
+
+                  <TableCell>
+                    <div>
+                      <p>{claim.patientName}</p>
+                      {isDue && (
+                        <p className="text-[10px] text-orange-500 font-semibold">âš  Follow-up due</p>
+                      )}
+                    </div>
+                  </TableCell>
+
+                  <TableCell>{claim.medicalAid}</TableCell>
+                  <TableCell>{claim.branch}</TableCell>
+
+                  <TableCell>
+                    <div>
+                      <p>{formatCurrency(claim.amount, currency)}</p>
+                      {claim.partialAmountPaid && (
+                        <>
+                          <p className="text-[10px] text-green-600">
+                            Paid: {formatCurrency(claim.partialAmountPaid, currency)}
+                          </p>
+                          <p className="text-[10px] text-orange-500 font-semibold">
+                            Bal: {formatCurrency(claim.amount - claim.partialAmountPaid, currency)}
+                          </p>
+                        </>
+                      )}
+                    </div>
+                  </TableCell>
+
+                  <TableCell>{new Date(claim.submissionDate).toLocaleDateString()}</TableCell>
+                  <TableCell className={AGING_COLORS[bucket]}>{days}d</TableCell>
+
+                  <TableCell>
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${STATUS_COLORS[claim.status] || ""}`}>
+                      {claim.status}
+                    </span>
+                  </TableCell>
+
+                  <TableCell>
+                    <div className="flex gap-1 items-center flex-wrap">
+
+                      {(claim.status === "pending" || claim.status === "approved") && (
+                        <>
+                          <Select onValueChange={(val) => updateStatus(claim._id, val)}>
+                            <SelectTrigger className="w-28 h-7 text-xs">
+                              <SelectValue placeholder="Update" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="pending">pending</SelectItem>
+                              <SelectItem value="approved">approved</SelectItem>
+                              <SelectItem value="paid">paid</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <PartialPaymentDialog
+                            claimId={claim._id}
+                            totalAmount={claim.amount}
+                            currency={currency}
+                            onDone={fetchClaims}
+                          />
+                          <RejectDialog claimId={claim._id} onDone={fetchClaims} />
+                          <FollowUpDialog
+                            claimId={claim._id}
+                            submissionDate={claim.submissionDate}
+                            currentFollowUpDate={claim.followUpDate}
+                            onDone={fetchClaims}
+                          />
+                        </>
+                      )}
+
+                      {claim.status === "rejected" && (
+                        <ResubmitDialog
+                          claimId={claim._id}
+                          originalClaimNumber={claim.claimNumber}
+                          onDone={fetchClaims}
+                        />
+                      )}
+
+                      {claim.status === "paid" && (
+                        <Select onValueChange={(val) => updateStatus(claim._id, val)}>
+                          <SelectTrigger className="w-32 h-7 text-xs border-dashed text-gray-400">
+                            <SelectValue placeholder="Correct â†º" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="approved">â†º approved</SelectItem>
+                            <SelectItem value="pending">â†º pending</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      )}
+
+                      {claim.status === "partial" && (
+                        <Select onValueChange={(val) => updateStatus(claim._id, val)}>
+                          <SelectTrigger className="w-32 h-7 text-xs border-dashed text-gray-400">
+                            <SelectValue placeholder="Correct â†º" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="paid">â†’ paid (full)</SelectItem>
+                            <SelectItem value="approved">â†º approved</SelectItem>
+                            <SelectItem value="pending">â†º pending</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      )}
+
+                      {claim.status === "superseded" && (
+                        <Select onValueChange={(val) => updateStatus(claim._id, val)}>
+                          <SelectTrigger className="w-32 h-7 text-xs border-dashed text-gray-400">
+                            <SelectValue placeholder="Correct â†º" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="pending">â†º reactivate</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      )}
+
+                      <Link href={`/claims/${claim._id}/edit?currency=${currency}`}>
+                        <Button variant="ghost" size="sm">Edit</Button>
+                      </Link>
+                      <DeleteDialog
+                        claimId={claim._id}
+                        claimNumber={claim.claimNumber}
+                        onDone={fetchClaims}
+                      />
+
+                    </div>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+            {filtered.length === 0 && (
+              <TableRow>
+                <TableCell colSpan={9} className="text-center text-muted-foreground py-8">
+                  No {currency} claims found
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      )}
+    </div>
+  );
+}
+
+// Main export with Suspense boundary
+export default function ClaimsPage() {
+  return (
+    <Suspense fallback={<div className="p-6 text-center">Loading claims...</div>}>
+      <ClaimsContent />
+    </Suspense>
+  );
+}
+
+==== FILE: C:\Users\user\Desktop\Link-Opticians-TMedical-Tracking\app\claims\category\[status]\page.tsx ====
+
+// PATH: app/claims/category/[status]/page.tsx
+
+"use client";
+
+import { useEffect, useState, useMemo } from "react";
+import { useParams, useSearchParams, useRouter } from "next/navigation";
+import Link from "next/link";
+import {
+  BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer,
+  LineChart, Line, CartesianGrid, Legend,
+} from "recharts";
+import { getDaysOutstanding, getAgingBucket } from "@/lib/utils/claims";
+import { formatCurrency } from "@/lib/utils/currency";
+import { isFollowUpDue } from "@/lib/utils/claims";
+import {
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { exportToCSV } from "@/lib/utils/export";
+import { useCurrency } from "@/context/CurrencyContext";
+
+// â”€â”€â”€ Types â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+interface Claim {
+  _id: string;
+  claimNumber: string;
+  patientName: string;
+  medicalAid: string;
+  branch: string;
+  amount: number;
+  currency: "USD" | "ZWG";
+  partialAmountPaid?: number;
+  status: string;
+  submissionDate: string;
+  paidDate?: string;
+  rejectionReason?: string;
+  followUpDate?: string;
+}
+
+// â”€â”€â”€ Category config â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+const CATEGORY_CONFIG: Record<string, {
+  label: string;
+  description: string;
+  accent: string;
+  icon: string;
+  filter: (c: Claim, aid?: string) => boolean;
+}> = {
+  pending: {
+    label: "Pending Claims",
+    description: "Submitted to 263 â€” awaiting approval or rejection",
+    accent: "bg-amber-400",
+    icon: "ðŸ•’",
+    filter: (c) => c.status === "pending",
+  },
+  approved: {
+    label: "Approved Claims",
+    description: "263 approved â€” waiting for medical aid to pay",
+    accent: "bg-blue-400",
+    icon: "âœ…",
+    filter: (c) => c.status === "approved",
+  },
+  partial: {
+    label: "Partial Balance Claims",
+    description: "Medical aid paid part of the claim â€” balance still owed",
+    accent: "bg-orange-400",
+    icon: "âš¡",
+    filter: (c) => c.status === "partial",
+  },
+  overdue: {
+    label: "Overdue 60+ Days",
+    description: "Claims pending or approved for more than 60 days â€” needs urgent follow-up",
+    accent: "bg-red-500",
+    icon: "âš ï¸",
+    filter: (c) =>
+      (c.status === "pending" || c.status === "approved" || c.status === "partial") &&
+      getDaysOutstanding(c.submissionDate) > 60,
+  },
+  warning: {
+    label: "31â€“60 Days Outstanding",
+    description: "Claims approaching the overdue threshold",
+    accent: "bg-amber-500",
+    icon: "ðŸ”¶",
+    filter: (c) => {
+      const d = getDaysOutstanding(c.submissionDate);
+      return (c.status === "pending" || c.status === "approved" || c.status === "partial") && d > 30 && d <= 60;
+    },
+  },
+  current: {
+    label: "0â€“30 Days Outstanding",
+    description: "Recently submitted claims within normal processing window",
+    accent: "bg-emerald-400",
+    icon: "ðŸŸ¢",
+    filter: (c) =>
+      (c.status === "pending" || c.status === "approved" || c.status === "partial") &&
+      getDaysOutstanding(c.submissionDate) <= 30,
+  },
+  rejected: {
+    label: "Rejected Claims",
+    description: "Declined by 263 â€” requires resubmission",
+    accent: "bg-red-400",
+    icon: "âŒ",
+    filter: (c) => c.status === "rejected",
+  },
+  paid: {
+    label: "Paid Claims",
+    description: "Fully paid claims â€” revenue confirmed",
+    accent: "bg-emerald-500",
+    icon: "ðŸ’°",
+    filter: (c) => c.status === "paid",
+  },
+  outstanding: {
+    label: "All Outstanding",
+    description: "All active claims â€” pending, approved, and partial balances",
+    accent: "bg-gray-700",
+    icon: "ðŸ“Š",
+    filter: (c, aid) => {
+      const isActive = c.status === "pending" || c.status === "approved" || c.status === "partial";
+      if (aid) return isActive && c.medicalAid === aid;
+      return isActive;
+    },
+  },
+  followup: {
+    label: "Follow-up Due",
+    description: "Claims that have passed their 30-day follow-up date",
+    accent: "bg-orange-500",
+    icon: "â°",
+    filter: (c) =>
+      (c.status === "pending" || c.status === "approved" || c.status === "partial") &&
+      isFollowUpDue(c.submissionDate, c.followUpDate),
+  },
+};
+
+const AGING_COLORS: Record<string, string> = {
+  current:  "text-green-600",
+  warning:  "text-yellow-600 font-semibold",
+  critical: "text-red-600 font-bold",
+};
+
+const STATUS_COLORS: Record<string, string> = {
+  pending:    "bg-yellow-100 text-yellow-800",
+  approved:   "bg-blue-100 text-blue-800",
+  rejected:   "bg-red-100 text-red-800",
+  paid:       "bg-green-100 text-green-800",
+  partial:    "bg-orange-100 text-orange-800",
+  superseded: "bg-gray-100 text-gray-400",
+};
+
+// â”€â”€â”€ Analytics Card â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+function AnalyticCard({
+  label, value, sub, accent,
+}: { label: string; value: string; sub?: string; accent: string }) {
+  return (
+    <div className={`bg-white rounded-xl border-l-4 ${accent} border border-gray-100 shadow-sm p-4`}>
+      <p className="text-xs font-semibold uppercase tracking-widest text-gray-400">{label}</p>
+      <p className="text-2xl font-bold text-gray-900 mt-1 tabular-nums">{value}</p>
+      {sub && <p className="text-xs text-gray-400 mt-0.5">{sub}</p>}
+    </div>
+  );
+}
+
+// â”€â”€â”€ Main Category Page â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+export default function CategoryPage() {
+  const { status } = useParams<{ status: string }>();
+  const searchParams = useSearchParams();
+  const aid = searchParams.get("aid") || undefined;
+  const urlCurrency = searchParams.get("currency");
+  const { currency: contextCurrency } = useCurrency();
+  const router = useRouter();
+
+  // Use URL currency if provided, otherwise use context currency
+  const activeCurrency = (urlCurrency as "USD" | "ZWG") || contextCurrency;
+
+  const [allClaims, setAllClaims] = useState<Claim[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [sortBy, setSortBy] = useState<"days" | "amount" | "date">("days");
+  const [sortDir, setSortDir] = useState<"desc" | "asc">("desc");
+
+  const config = CATEGORY_CONFIG[status] || CATEGORY_CONFIG.outstanding;
+
+  // Fetch claims filtered by currency
+  useEffect(() => {
+    const params = new URLSearchParams();
+    params.set("currency", activeCurrency);
+    fetch(`/api/claims?${params.toString()}`)
+      .then((r) => r.json())
+      .then((j) => { setAllClaims(j.data || []); setLoading(false); });
+  }, [activeCurrency]);
+
+  // Filter claims for this category AND by currency
+  const claims = useMemo(
+    () => allClaims.filter((c) => config.filter(c, aid) && c.currency === activeCurrency),
+    [allClaims, status, aid, activeCurrency]
+  );
+
+  // Effective amount helper
+  const effectiveAmount = (c: Claim) =>
+    c.status === "partial" && c.partialAmountPaid ? c.amount - c.partialAmountPaid : c.amount;
+
+  // Analytics
+  const totalAmount    = claims.reduce((s, c) => s + effectiveAmount(c), 0);
+  const avgDays        = claims.length
+    ? Math.round(claims.reduce((s, c) => s + getDaysOutstanding(c.submissionDate), 0) / claims.length)
+    : 0;
+  const oldest         = claims.length
+    ? Math.max(...claims.map((c) => getDaysOutstanding(c.submissionDate)))
+    : 0;
+  const largest        = claims.length
+    ? Math.max(...claims.map((c) => effectiveAmount(c)))
+    : 0;
+
+  // By medical aid chart data
+  const byAidData = useMemo(() => {
+    const map: Record<string, number> = {};
+    claims.forEach((c) => {
+      map[c.medicalAid] = (map[c.medicalAid] || 0) + effectiveAmount(c);
+    });
+    return Object.entries(map)
+      .map(([name, amount]) => ({ name, amount: parseFloat(amount.toFixed(2)) }))
+      .sort((a, b) => b.amount - a.amount);
+  }, [claims]);
+
+  // Submission trend (last 30 days)
+  const trendData = useMemo(() => {
+    const map: Record<string, number> = {};
+    const today = new Date();
+    for (let i = 29; i >= 0; i--) {
+      const d = new Date(today);
+      d.setDate(d.getDate() - i);
+      const key = d.toISOString().split("T")[0];
+      map[key] = 0;
+    }
+    claims.forEach((c) => {
+      const key = new Date(c.submissionDate).toISOString().split("T")[0];
+      if (key in map) map[key]++;
+    });
+    return Object.entries(map).map(([date, count]) => ({
+      date: date.slice(5), // MM-DD
+      count,
+    }));
+  }, [claims]);
+
+  // Sorted claims
+  const sorted = useMemo(() => {
+    return [...claims].sort((a, b) => {
+      let aVal = 0, bVal = 0;
+      if (sortBy === "days") {
+        aVal = getDaysOutstanding(a.submissionDate);
+        bVal = getDaysOutstanding(b.submissionDate);
+      } else if (sortBy === "amount") {
+        aVal = effectiveAmount(a);
+        bVal = effectiveAmount(b);
+      } else {
+        aVal = new Date(a.submissionDate).getTime();
+        bVal = new Date(b.submissionDate).getTime();
+      }
+      return sortDir === "desc" ? bVal - aVal : aVal - bVal;
+    });
+  }, [claims, sortBy, sortDir]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <p className="text-gray-400 text-sm animate-pulse">Loading {activeCurrency} claims...</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+
+      {/* Header */}
+      <div className="bg-white border-b border-gray-100 px-6 py-5">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex items-center gap-2 text-xs text-gray-400 mb-2">
+            <Link href="/dashboard" className="hover:text-gray-600 transition-colors">Dashboard</Link>
+            <span>â€º</span>
+            <span className="text-gray-700 font-medium">{config.label}</span>
+            {aid && (
+              <>
+                <span>â€º</span>
+                <span className="text-gray-700 font-medium">{aid}</span>
+              </>
+            )}
+            <span>â€º</span>
+            <span className="text-gray-700 font-medium">{activeCurrency}</span>
+          </div>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <span className="text-2xl">{config.icon}</span>
+              <div>
+                <h1 className="text-xl font-bold text-gray-900">{config.label} ({activeCurrency})</h1>
+                <p className="text-xs text-gray-400 mt-0.5">{config.description}</p>
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => exportToCSV(sorted, `link-${status}-${activeCurrency}-claims-${new Date().toISOString().split("T")[0]}.csv`)}
+              >
+                Export CSV
+              </Button>
+              <Link href="/claims/new">
+                <Button size="sm">+ New Claim</Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-6xl mx-auto px-6 py-8 space-y-8">
+
+        {/* â”€â”€ Level 2 Analytics â”€â”€ */}
+        {claims.length > 0 && (
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-3">
+              Category Analysis â€” {claims.length} claims in {activeCurrency}
+            </p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <AnalyticCard
+                label="Total Amount"
+                value={formatCurrency(totalAmount, activeCurrency)}
+                sub={`across ${claims.length} claims`}
+                accent="border-gray-700"
+              />
+              <AnalyticCard
+                label="Avg Days Outstanding"
+                value={`${avgDays}d`}
+                sub="average across all claims"
+                accent={avgDays > 60 ? "border-red-500" : avgDays > 30 ? "border-amber-400" : "border-emerald-400"}
+              />
+              <AnalyticCard
+                label="Oldest Claim"
+                value={`${oldest}d`}
+                sub="longest outstanding claim"
+                accent={oldest > 60 ? "border-red-500" : "border-amber-400"}
+              />
+              <AnalyticCard
+                label="Largest Claim"
+                value={formatCurrency(largest, activeCurrency)}
+                sub="highest single claim"
+                accent="border-blue-400"
+              />
+            </div>
+          </div>
+        )}
+
+        {/* â”€â”€ Charts â”€â”€ */}
+        {claims.length > 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+            {/* By Medical Aid */}
+            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+              <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-4">
+                Amount by Medical Aid ({activeCurrency})
+              </p>
+              {byAidData.length === 0 ? (
+                <p className="text-sm text-gray-400 text-center py-8">No data available</p>
+              ) : (
+                <ResponsiveContainer width="100%" height={200}>
+                  <BarChart data={byAidData} margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
+                    <XAxis dataKey="name" tick={{ fontSize: 11 }} />
+                    <YAxis tick={{ fontSize: 11 }} tickFormatter={(v) => `${activeCurrency === "USD" ? "$" : "ZWG "}${v}`} />
+                    <Tooltip formatter={(v: number) => formatCurrency(v, activeCurrency)} />
+                    <Bar dataKey="amount" fill="#6366f1" radius={[4, 4, 0, 0]} />
+                  </BarChart>
+                </ResponsiveContainer>
+              )}
+            </div>
+
+            {/* Submission Trend */}
+            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+              <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-4">
+                Submission Trend â€” Last 30 Days ({activeCurrency})
+              </p>
+              <ResponsiveContainer width="100%" height={200}>
+                <LineChart data={trendData} margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                  <XAxis dataKey="date" tick={{ fontSize: 10 }} interval={6} />
+                  <YAxis tick={{ fontSize: 11 }} allowDecimals={false} />
+                  <Tooltip />
+                  <Line type="monotone" dataKey="count" stroke="#6366f1" strokeWidth={2} dot={false} />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+
+          </div>
+        )}
+
+        {/* â”€â”€ Claims Table â”€â”€ */}
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+          <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
+            <p className="text-sm font-semibold text-gray-700">
+              {sorted.length} claim{sorted.length !== 1 ? "s" : ""}
+              {aid ? ` Â· ${aid}` : ""}
+              {` Â· ${activeCurrency}`}
+            </p>
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-gray-400">Sort by</span>
+              <Select
+                defaultValue="days"
+                onValueChange={(v) => setSortBy(v as "days" | "amount" | "date")}
+              >
+                <SelectTrigger className="h-7 w-32 text-xs">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="days">Days outstanding</SelectItem>
+                  <SelectItem value="amount">Amount</SelectItem>
+                  <SelectItem value="date">Date submitted</SelectItem>
+                </SelectContent>
+              </Select>
+              <Select
+                defaultValue="desc"
+                onValueChange={(v) => setSortDir(v as "desc" | "asc")}
+              >
+                <SelectTrigger className="h-7 w-24 text-xs">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="desc">High â†’ Low</SelectItem>
+                  <SelectItem value="asc">Low â†’ High</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          {sorted.length === 0 ? (
+            <div className="py-16 text-center">
+              <p className="text-gray-400 text-sm">No {activeCurrency} claims in this category</p>
+              <Link href="/dashboard">
+                <p className="text-xs text-blue-500 hover:underline mt-2 cursor-pointer">â† Back to dashboard</p>
+              </Link>
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-gray-100 bg-gray-50">
+                    <th className="text-left px-4 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wide">Claim #</th>
+                    <th className="text-left px-4 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wide">Patient</th>
+                    <th className="text-left px-4 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wide">Medical Aid</th>
+                    <th className="text-left px-4 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wide">Branch</th>
+                    <th className="text-right px-4 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wide">Amount ({activeCurrency})</th>
+                    <th className="text-left px-4 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wide">Submitted</th>
+                    <th className="text-left px-4 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wide">Days Out</th>
+                    <th className="text-left px-4 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wide">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {sorted.map((claim) => {
+                    const days   = getDaysOutstanding(claim.submissionDate, claim.paidDate);
+                    const bucket = getAgingBucket(days);
+                    const isDue  = isFollowUpDue(claim.submissionDate, claim.followUpDate) &&
+                      (claim.status === "pending" || claim.status === "approved" || claim.status === "partial");
+                    return (
+                      <tr
+                        key={claim._id}
+                        onClick={() => router.push(`/claims/${claim._id}`)}
+                        className={`border-b border-gray-50 hover:bg-blue-50 cursor-pointer transition-colors ${isDue ? "bg-orange-50" : ""}`}
+                      >
+                        <td className="px-4 py-3 font-mono text-xs text-gray-600">{claim.claimNumber}</td>
+                        <td className="px-4 py-3">
+                          <p className="font-medium text-gray-800">{claim.patientName}</p>
+                          {isDue && <p className="text-[10px] text-orange-500">â° Follow-up due</p>}
+                        </td>
+                        <td className="px-4 py-3 text-gray-600">{claim.medicalAid}</td>
+                        <td className="px-4 py-3 text-gray-600">{claim.branch}</td>
+                        <td className="px-4 py-3 text-right">
+                          <p className="font-semibold text-gray-900">{formatCurrency(effectiveAmount(claim), activeCurrency)}</p>
+                          {claim.partialAmountPaid && (
+                            <p className="text-[10px] text-orange-500">bal. of {formatCurrency(claim.amount, activeCurrency)}</p>
+                          )}
+                        </td>
+                        <td className="px-4 py-3 text-gray-500 text-xs">
+                          {new Date(claim.submissionDate).toLocaleDateString()}
+                        </td>
+                        <td className={`px-4 py-3 font-semibold text-sm ${AGING_COLORS[bucket]}`}>{days}d</td>
+                        <td className="px-4 py-3">
+                          <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${STATUS_COLORS[claim.status] || ""}`}>
+                            {claim.status}
+                          </span>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+
+        {/* Back nav */}
+        <div className="flex gap-3">
+          <Link href="/dashboard">
+            <button className="text-sm text-gray-600 border border-gray-200 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors">
+              â† Dashboard
+            </button>
+          </Link>
+          <Link href={`/claims?currency=${activeCurrency}`}>
+            <button className="text-sm text-gray-600 border border-gray-200 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors">
+              All Claims ({activeCurrency})
+            </button>
+          </Link>
+        </div>
+
+      </div>
+    </div>
+  );
+}
+
+==== FILE: C:\Users\user\Desktop\Link-Opticians-TMedical-Tracking\app\claims\new\page.tsx ====
+
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { MEDICAL_AIDS, BRANCHES, CURRENCIES } from "@/lib/constants";
+
+export default function NewClaimPage() {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [form, setForm] = useState({
+    claimNumber:    "",
+    patientName:    "",
+    patientId:      "",
+    medicalAid:     "",
+    memberNumber:   "",
+    branch:         "",
+    serviceDate:    "",
+    submissionDate: new Date().toISOString().split("T")[0],
+    amount:         "",
+    amountZWG:      "",  // NEW
+    currency:       "USD",  // NEW
+    notes:          "",
+  });
+
+  function set(field: string, value: string) {
+    setForm((prev) => ({ ...prev, [field]: value }));
+  }
+
+  async function handleSubmit() {
+    setLoading(true);
+    
+    const payload: any = {
+      ...form,
+      amount: form.currency === "USD" ? parseFloat(form.amount) : 0,
+      amountZWG: form.currency === "ZWG" ? parseFloat(form.amount) : undefined,
+    };
+    
+    const res = await fetch("/api/claims", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    
+    if (res.ok) router.push("/claims");
+    else setLoading(false);
+  }
+
+  return (
+    <div className="p-6 max-w-2xl mx-auto">
+      <Card>
+        <CardHeader>
+          <CardTitle>New Claim</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1">
+              <Label>Claim Number (from 263)</Label>
+              <Input value={form.claimNumber} onChange={(e) => set("claimNumber", e.target.value)} />
+            </div>
+            
+            {/* NEW: Currency selector */}
+            <div className="space-y-1">
+              <Label>Currency</Label>
+              <Select onValueChange={(v) => set("currency", v)} defaultValue="USD">
+                <SelectTrigger>
+                  <SelectValue placeholder="Select currency" />
+                </SelectTrigger>
+                <SelectContent>
+                  {CURRENCIES.map((c) => (
+                    <SelectItem key={c} value={c}>{c}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            
+            {/* Amount field with dynamic label */}
+            <div className="space-y-1">
+              <Label>Amount ({form.currency})</Label>
+              <Input 
+                type="number" 
+                placeholder={`Amount in ${form.currency}`}
+                value={form.amount} 
+                onChange={(e) => set("amount", e.target.value)} 
+              />
+            </div>
+            
+            <div className="space-y-1">
+              <Label>Patient Name</Label>
+              <Input value={form.patientName} onChange={(e) => set("patientName", e.target.value)} />
+            </div>
+            <div className="space-y-1">
+              <Label>Patient ID (VP Number)</Label>
+              <Input value={form.patientId} onChange={(e) => set("patientId", e.target.value)} />
+            </div>
+            <div className="space-y-1">
+              <Label>Medical Aid</Label>
+              <Select onValueChange={(v) => set("medicalAid", v)}>
+                <SelectTrigger><SelectValue placeholder="Select" /></SelectTrigger>
+                <SelectContent>
+                  {MEDICAL_AIDS.map((a) => <SelectItem key={a} value={a}>{a}</SelectItem>)}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-1">
+              <Label>Member Number</Label>
+              <Input value={form.memberNumber} onChange={(e) => set("memberNumber", e.target.value)} />
+            </div>
+            <div className="space-y-1">
+              <Label>Branch</Label>
+              <Select onValueChange={(v) => set("branch", v)}>
+                <SelectTrigger><SelectValue placeholder="Select" /></SelectTrigger>
+                <SelectContent>
+                  {BRANCHES.map((b) => <SelectItem key={b} value={b}>{b}</SelectItem>)}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-1">
+              <Label>Service Date</Label>
+              <Input type="date" value={form.serviceDate} onChange={(e) => set("serviceDate", e.target.value)} />
+            </div>
+            <div className="space-y-1">
+              <Label>Submission Date</Label>
+              <Input type="date" value={form.submissionDate} onChange={(e) => set("submissionDate", e.target.value)} />
+            </div>
+          </div>
+          <div className="space-y-1">
+            <Label>Notes</Label>
+            <Textarea value={form.notes} onChange={(e) => set("notes", e.target.value)} />
+          </div>
+          <div className="flex gap-3">
+            <Button onClick={handleSubmit} disabled={loading}>
+              {loading ? "Saving..." : "Save Claim"}
+            </Button>
+            <Button variant="outline" onClick={() => router.push("/claims")}>Cancel</Button>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+==== FILE: C:\Users\user\Desktop\Link-Opticians-TMedical-Tracking\app\claims\[id]\page.tsx ====
+
+// PATH: app/claims/[id]/page.tsx
+
+"use client";
+
+import { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import Link from "next/link";
+import { getDaysOutstanding } from "@/lib/utils/claims";
+import { formatCurrency } from "@/lib/utils/currency";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select, SelectContent, SelectItem,
+  SelectTrigger, SelectValue,
+} from "@/components/ui/select";
+import { RejectDialog } from "@/components/claims/RejectDialog";
+import { ResubmitDialog } from "@/components/claims/ResubmitDialog";
+import { PartialPaymentDialog } from "@/components/claims/PartialPaymentDialog";
+import { FollowUpDialog } from "@/components/claims/FollowUpDialog";
+import { DeleteDialog } from "@/components/claims/DeleteDialog";
+import { MEDICAL_AIDS, BRANCHES, CURRENCIES } from "@/lib/constants";
+
+// â”€â”€â”€ Types â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+interface Claim {
+  _id: string;
+  claimNumber: string;
+  patientName: string;
+  patientId: string;
+  medicalAid: string;
+  memberNumber: string;
+  branch: string;
+  amount: number;
+  currency: "USD" | "ZWG";
+  partialAmountPaid?: number;
+  status: string;
+  submissionDate: string;
+  serviceDate: string;
+  paidDate?: string;
+  rejectionReason?: string;
+  followUpDate?: string;
+  notes?: string;
+  resubmittedFrom?: string;
+  resubmissionCount?: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// â”€â”€â”€ Status Colors â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+const STATUS_COLORS: Record<string, string> = {
+  pending:    "bg-yellow-100 text-yellow-800 border-yellow-200",
+  approved:   "bg-blue-100 text-blue-800 border-blue-200",
+  rejected:   "bg-red-100 text-red-800 border-red-200",
+  paid:       "bg-green-100 text-green-800 border-green-200",
+  partial:    "bg-orange-100 text-orange-800 border-orange-200",
+  superseded: "bg-gray-100 text-gray-500 border-gray-200",
+};
+
+// â”€â”€â”€ Timeline Step â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+function TimelineStep({
+  label, date, done, active, color,
+}: {
+  label: string; date?: string; done: boolean; active: boolean; color: string;
+}) {
+  return (
+    <div className="flex items-start gap-3">
+      <div className="flex flex-col items-center">
+        <div className={`w-3 h-3 rounded-full border-2 mt-0.5 ${done || active ? color : "border-gray-200 bg-white"}`} />
+        <div className="w-0.5 h-8 bg-gray-100 mt-1" />
+      </div>
+      <div>
+        <p className={`text-sm font-medium ${done || active ? "text-gray-800" : "text-gray-300"}`}>{label}</p>
+        {date && <p className="text-xs text-gray-400">{new Date(date).toLocaleDateString()}</p>}
+        {active && !date && <p className="text-xs text-orange-400">Current state</p>}
+      </div>
+    </div>
+  );
+}
+
+// â”€â”€â”€ Info Row â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+function InfoRow({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex items-start justify-between py-2 border-b border-gray-50 last:border-0">
+      <span className="text-xs text-gray-400 font-medium uppercase tracking-wide">{label}</span>
+      <span className="text-sm text-gray-800 font-medium text-right max-w-[60%]">{value}</span>
+    </div>
+  );
+}
+
+// â”€â”€â”€ Main Claim Detail Page â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+export default function ClaimDetailPage() {
+  const { id }    = useParams<{ id: string }>();
+  const router    = useRouter();
+  const [claim, setClaim]     = useState<Claim | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [editing, setEditing] = useState(false);
+  const [saving, setSaving]   = useState(false);
+  const [form, setForm]       = useState<any>(null);
+
+  async function fetchClaim() {
+    const res  = await fetch(`/api/claims/${id}`);
+    const json = await res.json();
+    const c    = json.data;
+    setClaim(c);
+    setForm({
+      ...c,
+      serviceDate:    c.serviceDate?.split("T")[0] || "",
+      submissionDate: c.submissionDate?.split("T")[0] || "",
+      currency:       c.currency || "USD",
+    });
+    setLoading(false);
+  }
+
+  useEffect(() => { fetchClaim(); }, [id]);
+
+  function setField(field: string, value: string) {
+    setForm((prev: any) => ({ ...prev, [field]: value }));
+  }
+
+  async function handleSave() {
+    setSaving(true);
+    const payload: any = { ...form };
+    if (form.currency === "USD") {
+      payload.amount = parseFloat(form.amount);
+      payload.amountZWG = undefined;
+    } else {
+      payload.amountZWG = parseFloat(form.amount);
+      payload.amount = 0;
+    }
+    await fetch(`/api/claims/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    setSaving(false);
+    setEditing(false);
+    fetchClaim();
+  }
+
+  async function updateStatus(status: string) {
+    const body: any = { status };
+    if (status === "paid") body.paidDate = new Date().toISOString();
+    await fetch(`/api/claims/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    fetchClaim();
+  }
+
+  if (loading || !claim) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <p className="text-gray-400 text-sm animate-pulse">Loading claim...</p>
+      </div>
+    );
+  }
+
+  const days            = getDaysOutstanding(claim.submissionDate, claim.paidDate);
+  const effectiveAmount = claim.status === "partial" && claim.partialAmountPaid
+    ? claim.amount - claim.partialAmountPaid
+    : claim.amount;
+  const balanceWrittenOff = claim.partialAmountPaid
+    ? claim.amount - claim.partialAmountPaid
+    : 0;
+
+  // Timeline steps
+  const timeline = [
+    { label: "Service Provided",   date: claim.serviceDate,    done: true,                             active: false, color: "border-gray-500 bg-gray-500" },
+    { label: "Claim Submitted",    date: claim.submissionDate, done: true,                             active: false, color: "border-blue-500 bg-blue-500" },
+    { label: "Approved by 263",    date: claim.status === "approved" || claim.status === "paid" || claim.status === "partial" ? claim.submissionDate : undefined,
+      done: ["approved", "paid", "partial"].includes(claim.status), active: claim.status === "approved", color: "border-blue-500 bg-blue-500" },
+    { label: "Payment Received",   date: claim.paidDate,
+      done: claim.status === "paid" || claim.status === "partial", active: false,                      color: "border-green-500 bg-green-500" },
+  ];
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+
+      {/* Header */}
+      <div className="bg-white border-b border-gray-100 px-6 py-5">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex items-center gap-2 text-xs text-gray-400 mb-2">
+            <Link href="/dashboard" className="hover:text-gray-600">Dashboard</Link>
+            <span>â€º</span>
+            <Link href="/claims" className="hover:text-gray-600">Claims</Link>
+            <span>â€º</span>
+            <span className="text-gray-700 font-mono font-medium">{claim.claimNumber}</span>
+          </div>
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="flex items-center gap-3">
+                <h1 className="text-xl font-bold text-gray-900">{claim.patientName}</h1>
+                <span className={`px-2 py-0.5 rounded-full text-xs font-medium border ${STATUS_COLORS[claim.status] || ""}`}>
+                  {claim.status}
+                </span>
+                {claim.resubmissionCount && claim.resubmissionCount > 0 && (
+                  <span className="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">
+                    Resubmission #{claim.resubmissionCount}
+                  </span>
+                )}
+              </div>
+              <p className="text-xs text-gray-400 mt-0.5 font-mono">{claim.claimNumber} Â· {claim.medicalAid} Â· {claim.branch}</p>
+            </div>
+            <div className="flex gap-2 flex-wrap justify-end">
+              {!editing && (
+                <Button variant="outline" size="sm" onClick={() => setEditing(true)}>
+                  Edit Claim
+                </Button>
+              )}
+              {editing && (
+                <>
+                  <Button size="sm" onClick={handleSave} disabled={saving}>
+                    {saving ? "Saving..." : "Save Changes"}
+                  </Button>
+                  <Button variant="outline" size="sm" onClick={() => { setEditing(false); setForm({ ...claim, serviceDate: claim.serviceDate?.split("T")[0] || "", submissionDate: claim.submissionDate?.split("T")[0] || "" }); }}>
+                    Cancel
+                  </Button>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-6xl mx-auto px-6 py-8 space-y-6">
+
+        {/* â”€â”€ Level 3 Analytics â”€â”€ */}
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-3">
+            Claim Analysis
+          </p>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
+              <p className="text-xs text-gray-400 uppercase tracking-wide font-semibold">Claim Amount</p>
+              <p className="text-2xl font-bold text-gray-900 mt-1">{formatCurrency(claim.amount, claim.currency)}</p>
+              {claim.partialAmountPaid && (
+                <>
+                  <p className="text-xs text-green-600 mt-0.5">Paid: {formatCurrency(claim.partialAmountPaid, claim.currency)}</p>
+                  <p className="text-xs text-orange-500">Balance: {formatCurrency(effectiveAmount, claim.currency)}</p>
+                </>
+              )}
+            </div>
+            <div className={`bg-white rounded-xl border border-gray-100 shadow-sm p-4 border-l-4 ${days > 60 ? "border-l-red-500" : days > 30 ? "border-l-amber-400" : "border-l-emerald-400"}`}>
+              <p className="text-xs text-gray-400 uppercase tracking-wide font-semibold">Days Outstanding</p>
+              <p className={`text-2xl font-bold mt-1 ${days > 60 ? "text-red-600" : days > 30 ? "text-amber-600" : "text-emerald-600"}`}>{days}d</p>
+              <p className="text-xs text-gray-400 mt-0.5">
+                {days > 60 ? "âš ï¸ Overdue â€” chase today" : days > 30 ? "Approaching overdue" : "Within normal window"}
+              </p>
+            </div>
+            <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
+              <p className="text-xs text-gray-400 uppercase tracking-wide font-semibold">Service Date</p>
+              <p className="text-lg font-bold text-gray-900 mt-1">{new Date(claim.serviceDate).toLocaleDateString()}</p>
+              <p className="text-xs text-gray-400 mt-0.5">Submission: {new Date(claim.submissionDate).toLocaleDateString()}</p>
+            </div>
+            <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
+              <p className="text-xs text-gray-400 uppercase tracking-wide font-semibold">Member</p>
+              <p className="text-lg font-bold text-gray-900 mt-1 font-mono">{claim.memberNumber}</p>
+              <p className="text-xs text-gray-400 mt-0.5">VP ID: {claim.patientId}</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+          {/* â”€â”€ Left: Timeline + Payment Breakdown â”€â”€ */}
+          <div className="space-y-4">
+
+            {/* Claim Lifecycle Timeline */}
+            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+              <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-4">
+                Claim Lifecycle
+              </p>
+              <div>
+                {timeline.map((step, i) => (
+                  <TimelineStep key={i} {...step} />
+                ))}
+                {/* Rejected state */}
+                {claim.status === "rejected" && (
+                  <div className="flex items-start gap-3 -mt-2">
+                    <div className="flex flex-col items-center">
+                      <div className="w-3 h-3 rounded-full border-2 border-red-500 bg-red-500 mt-0.5" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-red-600">Rejected</p>
+                      {claim.rejectionReason && (
+                        <p className="text-xs text-red-400 mt-0.5">{claim.rejectionReason}</p>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Payment Breakdown */}
+            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+              <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-3">
+                Payment Breakdown ({claim.currency})
+              </p>
+              <div className="space-y-2">
+                <div className="flex justify-between">
+                  <span className="text-sm text-gray-500">Original claim</span>
+                  <span className="text-sm font-semibold text-gray-900">{formatCurrency(claim.amount, claim.currency)}</span>
+                </div>
+                {claim.partialAmountPaid ? (
+                  <>
+                    <div className="flex justify-between">
+                      <span className="text-sm text-gray-500">Amount paid</span>
+                      <span className="text-sm font-semibold text-green-600">{formatCurrency(claim.partialAmountPaid, claim.currency)}</span>
+                    </div>
+                    <div className="flex justify-between border-t pt-2">
+                      <span className="text-sm text-gray-500">Balance written off</span>
+                      <span className="text-sm font-semibold text-red-500">{formatCurrency(balanceWrittenOff, claim.currency)}</span>
+                    </div>
+                  </>
+                ) : claim.status === "paid" ? (
+                  <div className="flex justify-between">
+                    <span className="text-sm text-gray-500">Paid in full</span>
+                    <span className="text-sm font-semibold text-green-600">{formatCurrency(claim.amount, claim.currency)}</span>
+                  </div>
+                ) : (
+                  <div className="flex justify-between border-t pt-2">
+                    <span className="text-sm text-gray-500">Outstanding</span>
+                    <span className="text-sm font-semibold text-orange-600">{formatCurrency(claim.amount, claim.currency)}</span>
+                  </div>
+                )}
+                {claim.paidDate && (
+                  <p className="text-xs text-gray-400 mt-1">
+                    Paid on {new Date(claim.paidDate).toLocaleDateString()}
+                  </p>
+                )}
+              </div>
+            </div>
+
+          </div>
+
+          {/* â”€â”€ Center + Right: Details + Actions â”€â”€ */}
+          <div className="md:col-span-2 space-y-4">
+
+            {/* Claim Details â€” view or edit */}
+            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+              <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-4">
+                Claim Details {editing && <span className="text-blue-400 normal-case ml-1">â€” editing</span>}
+              </p>
+
+              {editing ? (
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-1">
+                    <Label>Claim Number</Label>
+                    <Input value={form.claimNumber} onChange={(e) => setField("claimNumber", e.target.value)} />
+                  </div>
+                  <div className="space-y-1">
+                    <Label>Currency</Label>
+                    <Select onValueChange={(v) => setField("currency", v)} defaultValue={form.currency}>
+                      <SelectTrigger><SelectValue /></SelectTrigger>
+                      <SelectContent>
+                        {CURRENCIES.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-1">
+                    <Label>Amount ({form.currency})</Label>
+                    <Input type="number" value={form.amount} onChange={(e) => setField("amount", e.target.value)} />
+                  </div>
+                  <div className="space-y-1">
+                    <Label>Patient Name</Label>
+                    <Input value={form.patientName} onChange={(e) => setField("patientName", e.target.value)} />
+                  </div>
+                  <div className="space-y-1">
+                    <Label>Patient ID (VP)</Label>
+                    <Input value={form.patientId} onChange={(e) => setField("patientId", e.target.value)} />
+                  </div>
+                  <div className="space-y-1">
+                    <Label>Medical Aid</Label>
+                    <Select onValueChange={(v) => setField("medicalAid", v)} defaultValue={form.medicalAid}>
+                      <SelectTrigger><SelectValue /></SelectTrigger>
+                      <SelectContent>
+                        {MEDICAL_AIDS.map((a) => <SelectItem key={a} value={a}>{a}</SelectItem>)}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-1">
+                    <Label>Member Number</Label>
+                    <Input value={form.memberNumber} onChange={(e) => setField("memberNumber", e.target.value)} />
+                  </div>
+                  <div className="space-y-1">
+                    <Label>Branch</Label>
+                    <Select onValueChange={(v) => setField("branch", v)} defaultValue={form.branch}>
+                      <SelectTrigger><SelectValue /></SelectTrigger>
+                      <SelectContent>
+                        {BRANCHES.map((b) => <SelectItem key={b} value={b}>{b}</SelectItem>)}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-1">
+                    <Label>Service Date</Label>
+                    <Input type="date" value={form.serviceDate} onChange={(e) => setField("serviceDate", e.target.value)} />
+                  </div>
+                  <div className="space-y-1">
+                    <Label>Submission Date</Label>
+                    <Input type="date" value={form.submissionDate} onChange={(e) => setField("submissionDate", e.target.value)} />
+                  </div>
+                  <div className="col-span-2 space-y-1">
+                    <Label>Notes</Label>
+                    <Textarea value={form.notes || ""} onChange={(e) => setField("notes", e.target.value)} rows={3} />
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-0">
+                  <InfoRow label="Claim #"        value={claim.claimNumber} />
+                  <InfoRow label="Patient"        value={claim.patientName} />
+                  <InfoRow label="Patient ID"     value={claim.patientId} />
+                  <InfoRow label="Medical Aid"    value={claim.medicalAid} />
+                  <InfoRow label="Member #"       value={claim.memberNumber} />
+                  <InfoRow label="Branch"         value={claim.branch} />
+                  <InfoRow label="Service Date"   value={new Date(claim.serviceDate).toLocaleDateString()} />
+                  <InfoRow label="Submitted"      value={new Date(claim.submissionDate).toLocaleDateString()} />
+                  <InfoRow label="Currency"       value={claim.currency} />
+                  <InfoRow label="Amount"         value={formatCurrency(claim.amount, claim.currency)} />
+                  <InfoRow label="Last Updated"   value={new Date(claim.updatedAt).toLocaleDateString()} />
+                  {claim.followUpDate && (
+                    <InfoRow label="Follow-up Date" value={new Date(claim.followUpDate).toLocaleDateString()} />
+                  )}
+                  {claim.rejectionReason && (
+                    <InfoRow label="Rejection Reason" value={claim.rejectionReason} />
+                  )}
+                  {claim.notes && (
+                    <InfoRow label="Notes" value={claim.notes} />
+                  )}
+                </div>
+              )}
+            </div>
+
+            {/* Status Actions */}
+            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+              <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-4">
+                Status & Actions
+              </p>
+              <div className="flex flex-wrap gap-2">
+
+                {/* Pending or Approved â€” full workflow */}
+                {(claim.status === "pending" || claim.status === "approved") && (
+                  <>
+                    <Select onValueChange={(val) => updateStatus(val)}>
+                      <SelectTrigger className="w-36 h-8 text-sm">
+                        <SelectValue placeholder="Update status" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="pending">pending</SelectItem>
+                        <SelectItem value="approved">approved</SelectItem>
+                        <SelectItem value="paid">paid</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <PartialPaymentDialog 
+                      claimId={claim._id} 
+                      totalAmount={claim.amount} 
+                      currency={claim.currency}
+                      onDone={fetchClaim} 
+                    />
+                    <RejectDialog claimId={claim._id} onDone={fetchClaim} />
+                    <FollowUpDialog
+                      claimId={claim._id}
+                      submissionDate={claim.submissionDate}
+                      currentFollowUpDate={claim.followUpDate}
+                      onDone={fetchClaim}
+                    />
+                  </>
+                )}
+
+                {/* Rejected â€” resubmit */}
+                {claim.status === "rejected" && (
+                  <ResubmitDialog
+                    claimId={claim._id}
+                    originalClaimNumber={claim.claimNumber}
+                    onDone={() => router.push("/claims")}
+                  />
+                )}
+
+                {/* Paid â€” correction only */}
+                {claim.status === "paid" && (
+                  <Select onValueChange={(val) => updateStatus(val)}>
+                    <SelectTrigger className="w-36 h-8 text-sm border-dashed text-gray-400">
+                      <SelectValue placeholder="Correct â†º" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="approved">â†º approved</SelectItem>
+                      <SelectItem value="pending">â†º pending</SelectItem>
+                    </SelectContent>
+                  </Select>
+                )}
+
+                {/* Partial â€” promote or revert */}
+                {claim.status === "partial" && (
+                  <Select onValueChange={(val) => updateStatus(val)}>
+                    <SelectTrigger className="w-36 h-8 text-sm border-dashed text-gray-400">
+                      <SelectValue placeholder="Correct â†º" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="paid">â†’ paid (full)</SelectItem>
+                      <SelectItem value="approved">â†º approved</SelectItem>
+                      <SelectItem value="pending">â†º pending</SelectItem>
+                    </SelectContent>
+                  </Select>
+                )}
+
+                {/* Superseded â€” reactivate */}
+                {claim.status === "superseded" && (
+                  <Select onValueChange={(val) => updateStatus(val)}>
+                    <SelectTrigger className="w-36 h-8 text-sm border-dashed text-gray-400">
+                      <SelectValue placeholder="Correct â†º" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="pending">â†º reactivate</SelectItem>
+                    </SelectContent>
+                  </Select>
+                )}
+
+                {/* Always: Delete */}
+                <DeleteDialog
+                  claimId={claim._id}
+                  claimNumber={claim.claimNumber}
+                  onDone={() => router.push("/claims")}
+                />
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        {/* Back nav */}
+        <div className="flex gap-3">
+          <button onClick={() => router.back()} className="text-sm text-gray-600 border border-gray-200 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors">
+            â† Back
+          </button>
+          <Link href="/claims">
+            <button className="text-sm text-gray-600 border border-gray-200 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors">
+              All Claims
+            </button>
+          </Link>
+          <Link href="/dashboard">
+            <button className="text-sm text-gray-600 border border-gray-200 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors">
+              Dashboard
+            </button>
+          </Link>
+        </div>
+
+      </div>
+    </div>
+  );
+}
+
+==== FILE: C:\Users\user\Desktop\Link-Opticians-TMedical-Tracking\app\claims\[id]\edit\page.tsx ====
+
+"use client";
+
+import { useEffect, useState } from "react";
+import { useRouter, useParams } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { MEDICAL_AIDS, BRANCHES, CURRENCIES } from "@/lib/constants";
+
+export default function EditClaimPage() {
+  const router    = useRouter();
+  const { id }    = useParams();
+  const [loading, setLoading]   = useState(false);
+  const [fetching, setFetching] = useState(true);
+  const [form, setForm]         = useState<any>(null);
+
+  useEffect(() => {
+    fetch(`/api/claims/${id}`)
+      .then((r) => r.json())
+      .then((j) => {
+        const c = j.data;
+        setForm({
+          ...c,
+          serviceDate:    c.serviceDate?.split("T")[0] || "",
+          submissionDate: c.submissionDate?.split("T")[0] || "",
+          currency:       c.currency || "USD",
+        });
+        setFetching(false);
+      });
+  }, [id]);
+
+  function set(field: string, value: string) {
+    setForm((prev: any) => ({ ...prev, [field]: value }));
+  }
+
+  async function handleSave() {
+    setLoading(true);
+    const payload: any = { ...form };
+    if (form.currency === "USD") {
+      payload.amount = parseFloat(form.amount);
+      payload.amountZWG = undefined;
+    } else {
+      payload.amountZWG = parseFloat(form.amount);
+      payload.amount = 0;
+    }
+    await fetch(`/api/claims/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    router.push("/claims");
+  }
+
+  if (fetching) return <p className="p-6 text-muted-foreground">Loading...</p>;
+
+  return (
+    <div className="p-6 max-w-2xl mx-auto">
+      <Card>
+        <CardHeader>
+          <CardTitle>Edit Claim â€” <span className="font-mono">{form.claimNumber}</span></CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1">
+              <Label>Claim Number</Label>
+              <Input value={form.claimNumber} onChange={(e) => set("claimNumber", e.target.value)} />
+            </div>
+            <div className="space-y-1">
+              <Label>Currency</Label>
+              <Select onValueChange={(v) => set("currency", v)} defaultValue={form.currency}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select currency" />
+                </SelectTrigger>
+                <SelectContent>
+                  {CURRENCIES.map((c) => (
+                    <SelectItem key={c} value={c}>{c}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-1">
+              <Label>Amount ({form.currency})</Label>
+              <Input 
+                type="number" 
+                value={form.amount} 
+                onChange={(e) => set("amount", e.target.value)} 
+              />
+            </div>
+            <div className="space-y-1">
+              <Label>Patient Name</Label>
+              <Input value={form.patientName} onChange={(e) => set("patientName", e.target.value)} />
+            </div>
+            <div className="space-y-1">
+              <Label>Patient ID</Label>
+              <Input value={form.patientId} onChange={(e) => set("patientId", e.target.value)} />
+            </div>
+            <div className="space-y-1">
+              <Label>Medical Aid</Label>
+              <Select onValueChange={(v) => set("medicalAid", v)} defaultValue={form.medicalAid}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  {MEDICAL_AIDS.map((a) => <SelectItem key={a} value={a}>{a}</SelectItem>)}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-1">
+              <Label>Member Number</Label>
+              <Input value={form.memberNumber} onChange={(e) => set("memberNumber", e.target.value)} />
+            </div>
+            <div className="space-y-1">
+              <Label>Branch</Label>
+              <Select onValueChange={(v) => set("branch", v)} defaultValue={form.branch}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  {BRANCHES.map((b) => <SelectItem key={b} value={b}>{b}</SelectItem>)}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-1">
+              <Label>Service Date</Label>
+              <Input type="date" value={form.serviceDate} onChange={(e) => set("serviceDate", e.target.value)} />
+            </div>
+            <div className="space-y-1">
+              <Label>Submission Date</Label>
+              <Input type="date" value={form.submissionDate} onChange={(e) => set("submissionDate", e.target.value)} />
+            </div>
+          </div>
+          <div className="space-y-1">
+            <Label>Notes</Label>
+            <Textarea value={form.notes || ""} onChange={(e) => set("notes", e.target.value)} />
+          </div>
+          <div className="flex gap-3">
+            <Button onClick={handleSave} disabled={loading}>
+              {loading ? "Saving..." : "Save Changes"}
+            </Button>
+            <Button variant="outline" onClick={() => router.push("/claims")}>Cancel</Button>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+==== FILE: C:\Users\user\Desktop\Link-Opticians-TMedical-Tracking\app\dashboard\page.tsx ====
+
+// PATH: app/dashboard/page.tsx
+
+"use client";
+
+import { useEffect, useState } from "react";
+import { getDaysOutstanding, formatUSD } from "@/lib/utils/claims";
+import { formatCurrency, getCurrencySymbol } from "@/lib/utils/currency";
+import Link from "next/link";
+import { isFollowUpDue } from "@/lib/utils/claims";
+import { useRouter } from "next/navigation";
+import { useCurrency } from "@/context/CurrencyContext";
+import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+// â”€â”€â”€ Types â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+interface Claim {
+  _id: string;
+  claimNumber: string;
+  patientName: string;
+  medicalAid: string;
+  branch: string;
+  amount: number;
+  currency: "USD" | "ZWG";
+  partialAmountPaid?: number;
+  status: "pending" | "approved" | "paid" | "rejected" | "superseded" | "partial";
+  submissionDate: string;
+  paidDate?: string;
+  rejectionReason?: string;
+  followUpDate?: string;
+}
+
+// â”€â”€â”€ Clickable Stat Card â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+function StatCard({
+  label, sublabel, amount, count, countLabel,
+  accent, icon, hint, href, currency,
+}: {
+  label: string; sublabel: string; amount: number; count: number;
+  countLabel: string; accent: string; icon: string; hint: string;
+  href: string; currency: "USD" | "ZWG";
+}) {
+  return (
+    <Link href={href}>
+      <div className="relative bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-md hover:border-gray-200 transition-all cursor-pointer group">
+        <div className={`absolute left-0 top-0 bottom-0 w-1 ${accent}`} />
+        <div className="px-5 pt-5 pb-4 pl-6">
+          <div className="flex items-start justify-between">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-widest text-gray-400">{label}</p>
+              <p className="text-[11px] text-gray-400 mt-0.5">{sublabel}</p>
+            </div>
+            <span className="text-xl">{icon}</span>
+          </div>
+          <p className="mt-3 text-3xl font-bold text-gray-900 tabular-nums">{formatCurrency(amount, currency)}</p>
+          <div className="mt-2 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-semibold text-gray-700">{count} {countLabel}</span>
+              <span className="text-gray-300">Â·</span>
+              <span className="text-xs text-gray-400">{hint}</span>
+            </div>
+            <span className="text-xs text-gray-300 group-hover:text-gray-500 transition-colors">View â†’</span>
+          </div>
+        </div>
+      </div>
+    </Link>
+  );
+}
+
+// â”€â”€â”€ Clickable Resolved Card â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+function ResolvedCard({
+  label, sublabel, amount, count, countLabel,
+  icon, accent, hint, href, currency,
+}: {
+  label: string; sublabel: string; amount: number; count: number;
+  countLabel: string; icon: string; accent: string; hint: string;
+  href: string; currency: "USD" | "ZWG";
+}) {
+  return (
+    <Link href={href}>
+      <div className="relative bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-md hover:border-gray-200 transition-all cursor-pointer group">
+        <div className={`absolute left-0 top-0 bottom-0 w-1 ${accent}`} />
+        <div className="px-5 pt-5 pb-4 pl-6">
+          <div className="flex items-start justify-between">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-widest text-gray-400">{label}</p>
+              <p className="text-[11px] text-gray-400 mt-0.5">{sublabel}</p>
+            </div>
+            <span className="text-xl">{icon}</span>
+          </div>
+          <p className="mt-3 text-3xl font-bold text-gray-900 tabular-nums">{formatCurrency(amount, currency)}</p>
+          <div className="mt-2 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-semibold text-gray-700">{count} {countLabel}</span>
+              <span className="text-gray-300">Â·</span>
+              <span className="text-xs text-gray-400">{hint}</span>
+            </div>
+            <span className="text-xs text-gray-300 group-hover:text-gray-500 transition-colors">View â†’</span>
+          </div>
+        </div>
+      </div>
+    </Link>
+  );
+}
+
+// â”€â”€â”€ Clickable Aging Bar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+function AgingBar({
+  bucket0, bucket31, bucket60, currency,
+}: {
+  bucket0: number; bucket31: number; bucket60: number;
+  currency: "USD" | "ZWG";
+}) {
+  const total = bucket0 + bucket31 + bucket60 || 1;
+  return (
+    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+      <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-4">
+        Aging Breakdown ({currency})
+      </p>
+      <div className="flex rounded-full overflow-hidden h-3 gap-0.5">
+        <div className="bg-emerald-400 transition-all" style={{ width: `${(bucket0 / total) * 100}%` }} />
+        <div className="bg-amber-400 transition-all"  style={{ width: `${(bucket31 / total) * 100}%` }} />
+        <div className="bg-red-500 transition-all"    style={{ width: `${(bucket60 / total) * 100}%` }} />
+      </div>
+      <div className="flex gap-3 mt-3 flex-wrap">
+        {[
+          { label: "0â€“30 days",  color: "bg-emerald-400", amount: bucket0,  href: "/claims/category/current"  },
+          { label: "31â€“60 days", color: "bg-amber-400",   amount: bucket31, href: "/claims/category/warning"  },
+          { label: "60+ days",   color: "bg-red-500",     amount: bucket60, href: "/claims/category/overdue"  },
+        ].map((b) => (
+          <Link key={b.label} href={`${b.href}?currency=${currency}`}>
+            <div className="flex items-center gap-1.5 px-2 py-1 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer group">
+              <span className={`w-2 h-2 rounded-full ${b.color}`} />
+              <span className="text-xs text-gray-500">{b.label}</span>
+              <span className="text-xs font-semibold text-gray-800">{formatCurrency(b.amount, currency)}</span>
+              <span className="text-[10px] text-gray-300 group-hover:text-gray-400">â†’</span>
+            </div>
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// â”€â”€â”€ Clickable Medical Aid Table â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+function MedicalAidTable({
+  data, currency,
+}: {
+  data: Record<string, { pending: number; approved: number; partial: number; total: number }>;
+  currency: "USD" | "ZWG";
+}) {
+  const sorted = Object.entries(data).sort((a, b) => b[1].total - a[1].total);
+  return (
+    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+      <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-4">
+        Outstanding by Medical Aid ({currency})
+      </p>
+      {sorted.length === 0 ? (
+        <p className="text-sm text-gray-400">No outstanding claims in {currency}</p>
+      ) : (
+        <div className="space-y-3">
+          {sorted.map(([aid, vals]) => {
+            const pct = (vals.total / sorted[0][1].total) * 100;
+            return (
+              <Link key={aid} href={`/claims/category/outstanding?aid=${encodeURIComponent(aid)}&currency=${currency}`}>
+                <div className="group cursor-pointer hover:bg-gray-50 rounded-lg p-1 -mx-1 transition-colors">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-sm font-medium text-gray-800 group-hover:text-gray-900">{aid}</span>
+                    <div className="flex items-center gap-3">
+                      {vals.pending  > 0 && <span className="text-xs text-amber-600">{formatCurrency(vals.pending, currency)} pending</span>}
+                      {vals.approved > 0 && <span className="text-xs text-blue-600">{formatCurrency(vals.approved, currency)} approved</span>}
+                      {vals.partial  > 0 && <span className="text-xs text-orange-500">{formatCurrency(vals.partial, currency)} partial bal.</span>}
+                      <span className="text-sm font-bold text-gray-900">{formatCurrency(vals.total, currency)}</span>
+                      <span className="text-xs text-gray-300 group-hover:text-gray-500">â†’</span>
+                    </div>
+                  </div>
+                  <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                    <div className="h-full bg-rose-400 rounded-full transition-all" style={{ width: `${pct}%` }} />
+                  </div>
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// â”€â”€â”€ Rejected List â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+function RejectedTable({ claims, currency }: { claims: Claim[]; currency: "USD" | "ZWG" }) {
+  if (claims.length === 0) return null;
+  return (
+    <div className="bg-white rounded-2xl border border-red-100 shadow-sm p-5">
+      <div className="flex items-center justify-between mb-4">
+        <p className="text-xs font-semibold uppercase tracking-widest text-red-400">
+          âš ï¸ Rejected â€” Action Required ({currency})
+        </p>
+        <Link href={`/claims/category/rejected?currency=${currency}`}>
+          <span className="text-xs text-blue-500 hover:underline cursor-pointer">View all â†’</span>
+        </Link>
+      </div>
+      <div className="space-y-2">
+        {claims.slice(0, 5).map((c) => (
+          <Link key={c._id} href={`/claims/${c._id}`}>
+            <div className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0 hover:bg-gray-50 rounded-lg px-1 -mx-1 transition-colors cursor-pointer">
+              <div>
+                <p className="text-sm font-medium text-gray-800">{c.patientName}</p>
+                <p className="text-xs text-gray-400">{c.medicalAid} Â· {c.claimNumber}</p>
+                {c.rejectionReason && (
+                  <p className="text-xs text-red-500 mt-0.5">&quot;{c.rejectionReason}&quot;</p>
+                )}
+              </div>
+              <div className="text-right">
+                <p className="text-sm font-bold text-gray-900">{formatCurrency(c.amount, currency)}</p>
+                <p className="text-xs text-blue-500">View â†’</p>
+              </div>
+            </div>
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// â”€â”€â”€ Main Dashboard â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+export default function DashboardPage() {
+  const [claims, setClaims] = useState<Claim[]>([]);
+  const [loading, setLoading] = useState(true);
+  const { currency, setCurrency } = useCurrency();
+  const router = useRouter();
+
+  useEffect(() => {
+    fetch("/api/claims")
+      .then((r) => r.json())
+      .then((j) => { setClaims(j.data || []); setLoading(false); });
+  }, []);
+
+  // Filter claims by selected currency
+  const currencyClaims = claims.filter(c => c.currency === currency);
+
+  const pending = currencyClaims.filter((c) => c.status === "pending");
+  const approved = currencyClaims.filter((c) => c.status === "approved");
+  const rejected = currencyClaims.filter((c) => c.status === "rejected");
+  const partial = currencyClaims.filter((c) => c.status === "partial");
+
+  const now = new Date();
+  const paidMonth = currencyClaims.filter((c) => {
+    if (c.status !== "paid" || !c.paidDate) return false;
+    const d = new Date(c.paidDate);
+    return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+  });
+
+  const outstanding = [...pending, ...approved, ...partial];
+
+  const sum = (arr: Claim[]) =>
+    arr.reduce((s, c) => {
+      if (c.status === "partial" && c.partialAmountPaid) return s + (c.amount - c.partialAmountPaid);
+      return s + c.amount;
+    }, 0);
+
+  const totalOutstanding = sum(outstanding);
+
+  const bucket0 = outstanding.filter((c) => getDaysOutstanding(c.submissionDate) <= 30);
+  const bucket31 = outstanding.filter((c) => { const d = getDaysOutstanding(c.submissionDate); return d > 30 && d <= 60; });
+  const bucket60 = outstanding.filter((c) => getDaysOutstanding(c.submissionDate) > 60);
+
+  const byAid: Record<string, { pending: number; approved: number; partial: number; total: number }> = {};
+  outstanding.forEach((c) => {
+    if (!byAid[c.medicalAid]) byAid[c.medicalAid] = { pending: 0, approved: 0, partial: 0, total: 0 };
+    const eff = c.status === "partial" && c.partialAmountPaid ? c.amount - c.partialAmountPaid : c.amount;
+    if (c.status === "pending") byAid[c.medicalAid].pending += eff;
+    if (c.status === "approved") byAid[c.medicalAid].approved += eff;
+    if (c.status === "partial") byAid[c.medicalAid].partial += eff;
+    byAid[c.medicalAid].total += eff;
+  });
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <p className="text-gray-400 text-sm animate-pulse">Loading dashboard...</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+
+      {/* Header with Currency Switcher */}
+      <div className="bg-white border-b border-gray-100 px-6 py-5">
+        <div className="max-w-6xl mx-auto flex items-center justify-between">
+          <div>
+            <h1 className="text-xl font-bold text-gray-900">Claims Dashboard</h1>
+            <p className="text-xs text-gray-400 mt-0.5">
+              Link Optical Â· {new Date().toLocaleDateString("en-ZW", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}
+            </p>
+          </div>
+          <div className="flex gap-3 items-center">
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-gray-500">Display:</span>
+              <Select value={currency} onValueChange={(v) => setCurrency(v as "USD" | "ZWG")}>
+                <SelectTrigger className="w-24 h-8">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="USD">USD</SelectItem>
+                  <SelectItem value="ZWG">ZWG</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <Link href="/claims/new">
+              <button className="bg-gray-900 text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors">
+                + New Claim
+              </button>
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-6xl mx-auto px-6 py-8 space-y-6">
+
+        {/* Total Outstanding Banner â€” clickable */}
+        <Link href={`/claims/category/outstanding?currency=${currency}`}>
+          <div className="bg-gray-900 text-white rounded-2xl px-7 py-6 flex items-center justify-between hover:bg-gray-800 transition-colors cursor-pointer group">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-widest text-gray-400">Total Outstanding ({currency})</p>
+              <p className="text-[11px] text-gray-500 mt-0.5">Pending + Approved + Partial balances â€” click to drill down</p>
+              <p className="text-5xl font-bold mt-3 tabular-nums">{formatCurrency(totalOutstanding, currency)}</p>
+              <p className="text-sm text-gray-400 mt-2">
+                {outstanding.length} active claims across {Object.keys(byAid).length} medical aid{Object.keys(byAid).length !== 1 ? "s" : ""}
+              </p>
+            </div>
+            <div className="hidden md:flex flex-col items-end gap-2">
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-amber-400" />
+                <span className="text-xs text-gray-400">{pending.length} pending Â· {formatCurrency(sum(pending), currency)}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-blue-400" />
+                <span className="text-xs text-gray-400">{approved.length} approved Â· {formatCurrency(sum(approved), currency)}</span>
+              </div>
+              {partial.length > 0 && (
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-orange-400" />
+                  <span className="text-xs text-gray-400">{partial.length} partial bal. Â· {formatCurrency(sum(partial), currency)}</span>
+                </div>
+              )}
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-red-400" />
+                <span className="text-xs text-gray-400">{bucket60.length} overdue 60+ days</span>
+              </div>
+              <span className="text-xs text-gray-500 group-hover:text-gray-300 mt-2">View all outstanding â†’</span>
+            </div>
+          </div>
+        </Link>
+
+        {/* Row 1: Active Status Cards */}
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-3">
+            Active Claims â€” Click any card to drill down
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+            <StatCard
+              label="Pending" sublabel="Submitted to 263, awaiting response"
+              amount={sum(pending)} count={pending.length} countLabel="claims"
+              accent="bg-amber-400" icon="ðŸ•’" hint="263 has not yet responded"
+              href={`/claims/category/pending?currency=${currency}`}
+              currency={currency}
+            />
+            <StatCard
+              label="Approved" sublabel="263 approved â€” waiting for payment"
+              amount={sum(approved)} count={approved.length} countLabel="claims"
+              accent="bg-blue-400" icon="âœ…" hint="Medical aid owes this money"
+              href={`/claims/category/approved?currency=${currency}`}
+              currency={currency}
+            />
+            <StatCard
+              label="Partial Balance" sublabel="Partially paid â€” balance still owed"
+              amount={sum(partial)} count={partial.length} countLabel="claims"
+              accent="bg-orange-400" icon="âš¡" hint="Balance after partial payment"
+              href={`/claims/category/partial?currency=${currency}`}
+              currency={currency}
+            />
+            <StatCard
+              label="Overdue 60+ Days" sublabel="Outstanding over 60 days"
+              amount={sum(bucket60)} count={bucket60.length} countLabel="claims"
+              accent="bg-red-500" icon="âš ï¸" hint="Chase today"
+              href={`/claims/category/overdue?currency=${currency}`}
+              currency={currency}
+            />
+          </div>
+        </div>
+
+        {/* Row 2: Aging + Medical Aid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <AgingBar 
+            bucket0={sum(bucket0)} 
+            bucket31={sum(bucket31)} 
+            bucket60={sum(bucket60)} 
+            currency={currency}
+          />
+          <MedicalAidTable data={byAid} currency={currency} />
+        </div>
+
+        {/* Row 3: Resolved */}
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-3">
+            Resolved This Month ({currency})
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <ResolvedCard
+              label="Paid This Month"
+              sublabel={`${now.toLocaleString("default", { month: "long" })} ${now.getFullYear()} â€” confirmed received`}
+              amount={paidMonth.reduce((s, c) => s + c.amount, 0)}
+              count={paidMonth.length} countLabel="claims paid"
+              icon="ðŸ’°" accent="bg-emerald-500" hint="Revenue collected and confirmed"
+              href={`/claims/category/paid?currency=${currency}`}
+              currency={currency}
+            />
+            <ResolvedCard
+              label="Rejected" sublabel="Declined by 263 â€” needs resubmission"
+              amount={rejected.reduce((s, c) => s + c.amount, 0)}
+              count={rejected.length} countLabel="claims rejected"
+              icon="âŒ" accent="bg-red-400"
+              hint={rejected.length > 0 ? "Action needed â€” resubmit" : "All clear"}
+              href={`/claims/category/rejected?currency=${currency}`}
+              currency={currency}
+            />
+          </div>
+        </div>
+
+        {/* Follow-up Due Banner */}
+        {(() => {
+          const dueNow = outstanding.filter((c) => isFollowUpDue(c.submissionDate, c.followUpDate));
+          if (dueNow.length === 0) return null;
+          return (
+            <div className="bg-orange-50 border border-orange-200 rounded-2xl p-5">
+              <div className="flex items-center justify-between mb-3">
+                <div>
+                  <p className="text-sm font-semibold text-orange-800">
+                    â° {dueNow.length} claim{dueNow.length !== 1 ? "s" : ""} need follow-up today ({currency})
+                  </p>
+                  <p className="text-xs text-orange-500 mt-0.5">
+                    These claims passed their 30-day follow-up date â€” chase the medical aid
+                  </p>
+                </div>
+                <Link href={`/claims/category/followup?currency=${currency}`}>
+                  <button className="text-xs text-orange-700 border border-orange-300 px-3 py-1.5 rounded-lg hover:bg-orange-100 transition-colors">
+                    View all â†’
+                  </button>
+                </Link>
+              </div>
+              <div className="space-y-2">
+                {dueNow.slice(0, 3).map((c) => (
+                  <Link key={c._id} href={`/claims/${c._id}`}>
+                    <div className="flex items-center justify-between bg-white rounded-lg px-3 py-2 border border-orange-100 hover:border-orange-200 transition-colors cursor-pointer">
+                      <div>
+                        <p className="text-sm font-medium text-gray-800">{c.patientName}</p>
+                        <p className="text-xs text-gray-400">{c.medicalAid} Â· {c.claimNumber} Â· {c.status}</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-sm font-bold text-gray-900">
+                          {c.status === "partial" && c.partialAmountPaid
+                            ? formatCurrency(c.amount - c.partialAmountPaid, currency)
+                            : formatCurrency(c.amount, currency)}
+                        </p>
+                        {c.status === "partial" && (
+                          <p className="text-[10px] text-orange-500">balance remaining</p>
+                        )}
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+                {dueNow.length > 3 && (
+                  <p className="text-xs text-orange-500 text-center pt-1">+{dueNow.length - 3} more</p>
+                )}
+              </div>
+            </div>
+          );
+        })()}
+
+        {/* Rejected Action List */}
+        {rejected.length > 0 && <RejectedTable claims={rejected} currency={currency} />}
+
+        {/* Footer Nav */}
+        <div className="flex gap-3 pt-2">
+          <Link href={`/claims?currency=${currency}`}>
+            <button className="text-sm text-gray-600 border border-gray-200 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors">
+              View All Claims â†’
+            </button>
+          </Link>
+          <Link href={`/claims/category/rejected?currency=${currency}`}>
+            <button className="text-sm text-red-600 border border-red-100 px-4 py-2 rounded-lg hover:bg-red-50 transition-colors">
+              View Rejected â†’
+            </button>
+          </Link>
+        </div>
+
+      </div>
+    </div>
+  );
+}

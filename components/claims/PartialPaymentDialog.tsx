@@ -44,6 +44,7 @@ export function PartialPaymentDialog({ claimId, totalAmount, currency, onDone }:
       payload.partialAmountPaid = paid;
     } else {
       payload.partialAmountPaidZWG = paid;
+      payload.partialAmountPaid = paid; // Also set for display consistency
     }
     
     await fetch(`/api/claims/${claimId}`, {

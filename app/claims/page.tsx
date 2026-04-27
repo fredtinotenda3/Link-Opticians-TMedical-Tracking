@@ -3,7 +3,7 @@
 import { PartialPaymentDialog } from "@/components/claims/PartialPaymentDialog";
 import { FollowUpDialog } from "@/components/claims/FollowUpDialog";
 import { isFollowUpDue } from "@/lib/utils/claims";
-import { useEffect, useState, Suspense } from "react"; // Add Suspense
+import { useEffect, useState, Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -90,6 +90,22 @@ function ClaimsContent() {
     fetchClaims();
   }
 
+  // Helper to get display amount based on claim currency
+  const getDisplayAmount = (claim: any) => {
+    if (claim.currency === 'ZWG') {
+      return claim.amountZWG || claim.amount || 0;
+    }
+    return claim.amount || 0;
+  };
+
+  // Helper to get display partial amount
+  const getDisplayPartialAmount = (claim: any) => {
+    if (claim.currency === 'ZWG') {
+      return claim.partialAmountPaidZWG || 0;
+    }
+    return claim.partialAmountPaid || 0;
+  };
+
   return (
     <div className="p-6 space-y-4">
       <div className="flex items-center justify-between">
@@ -135,7 +151,6 @@ function ClaimsContent() {
         <Select onValueChange={setBranch} defaultValue="all">
           <SelectTrigger className="w-44"><SelectValue placeholder="Branch" /></SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Branches</SelectItem>
             {BRANCHES.map((b) => <SelectItem key={b} value={b}>{b}</SelectItem>)}
           </SelectContent>
         </Select>
@@ -166,6 +181,9 @@ function ClaimsContent() {
               const isDue  =
                 (claim.status === "pending" || claim.status === "approved" || claim.status === "partial") &&
                 isFollowUpDue(claim.submissionDate, claim.followUpDate);
+              
+              const displayAmount = getDisplayAmount(claim);
+              const displayPartial = getDisplayPartialAmount(claim);
 
               return (
                 <TableRow
@@ -188,14 +206,14 @@ function ClaimsContent() {
 
                   <TableCell>
                     <div>
-                      <p>{formatCurrency(claim.amount, currency)}</p>
-                      {claim.partialAmountPaid && (
+                      <p>{formatCurrency(displayAmount, currency)}</p>
+                      {displayPartial > 0 && (
                         <>
                           <p className="text-[10px] text-green-600">
-                            Paid: {formatCurrency(claim.partialAmountPaid, currency)}
+                            Paid: {formatCurrency(displayPartial, currency)}
                           </p>
                           <p className="text-[10px] text-orange-500 font-semibold">
-                            Bal: {formatCurrency(claim.amount - claim.partialAmountPaid, currency)}
+                            Bal: {formatCurrency(displayAmount - displayPartial, currency)}
                           </p>
                         </>
                       )}
@@ -228,7 +246,7 @@ function ClaimsContent() {
                           </Select>
                           <PartialPaymentDialog
                             claimId={claim._id}
-                            totalAmount={claim.amount}
+                            totalAmount={displayAmount}
                             currency={currency}
                             onDone={fetchClaims}
                           />

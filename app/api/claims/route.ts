@@ -21,9 +21,13 @@ export async function GET(req: NextRequest) {
     // Transform claims to include the correct amount for display
     const transformedClaims = claims.map(claim => {
       const claimObj = claim.toObject();
-      // For ZWG claims, use amountZWG as the main amount for display
-      if (claimObj.currency === 'ZWG' && claimObj.amountZWG) {
-        claimObj.amount = claimObj.amountZWG;
+      // For ZWG claims, override amount with amountZWG for display
+      if (claimObj.currency === 'ZWG') {
+        claimObj.amount = claimObj.amountZWG || 0;
+      }
+      // Also ensure partialAmountPaid is handled
+      if (claimObj.currency === 'ZWG' && claimObj.partialAmountPaidZWG) {
+        claimObj.partialAmountPaid = claimObj.partialAmountPaidZWG;
       }
       return claimObj;
     });
@@ -43,20 +47,21 @@ export async function POST(req: NextRequest) {
     // Ensure proper amount handling based on currency
     const claimData = { ...body };
     if (claimData.currency === 'ZWG') {
-      // For ZWG claims, store amount in amountZWG and set amount to 0 or keep it for reference
-      claimData.amountZWG = claimData.amount;
-      claimData.amount = 0; // Don't use the amount field for ZWG
+      // For ZWG claims, store amount in amountZWG and also keep amount for consistency
+      claimData.amountZWG = parseFloat(claimData.amount) || 0;
+      claimData.amount = claimData.amountZWG; // Store same value for display
     } else {
       // For USD claims, ensure amountZWG is undefined
       claimData.amountZWG = undefined;
+      claimData.amount = parseFloat(claimData.amount) || 0;
     }
     
     const claim = await Claim.create(claimData);
     
     // Transform response for consistency
     const responseClaim = claim.toObject();
-    if (responseClaim.currency === 'ZWG' && responseClaim.amountZWG) {
-      responseClaim.amount = responseClaim.amountZWG;
+    if (responseClaim.currency === 'ZWG') {
+      responseClaim.amount = responseClaim.amountZWG || 0;
     }
     
     return NextResponse.json({ success: true, data: responseClaim }, { status: 201 });

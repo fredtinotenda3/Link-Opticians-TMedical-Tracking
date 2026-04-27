@@ -57,12 +57,20 @@ const ClaimSchema = new Schema<IClaim>(
   { timestamps: true }
 );
 
-// Add a virtual field to get the display amount based on currency
+// Virtual field to get the display amount based on currency
 ClaimSchema.virtual('displayAmount').get(function() {
   if (this.currency === 'ZWG' && this.amountZWG) {
     return this.amountZWG;
   }
   return this.amount;
+});
+
+// Virtual field for display partial amount
+ClaimSchema.virtual('displayPartialAmountPaid').get(function() {
+  if (this.currency === 'ZWG' && this.partialAmountPaidZWG) {
+    return this.partialAmountPaidZWG;
+  }
+  return this.partialAmountPaid;
 });
 
 const Claim: Model<IClaim> =

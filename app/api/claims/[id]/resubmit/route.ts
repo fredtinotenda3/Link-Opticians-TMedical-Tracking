@@ -45,8 +45,9 @@ export async function POST(
     
     // Handle amount based on original currency
     if (original.currency === 'ZWG') {
-      resubmittedData.amountZWG = original.amountZWG || original.amount;
-      resubmittedData.amount = 0;
+      const amountValue = original.amountZWG || original.amount;
+      resubmittedData.amountZWG = amountValue;
+      resubmittedData.amount = amountValue; // Store same value for display
     } else {
       resubmittedData.amount = original.amount;
       resubmittedData.amountZWG = undefined;
@@ -59,8 +60,8 @@ export async function POST(
 
     // Transform response
     const responseClaim = resubmitted.toObject();
-    if (responseClaim.currency === 'ZWG' && responseClaim.amountZWG) {
-      responseClaim.amount = responseClaim.amountZWG;
+    if (responseClaim.currency === 'ZWG') {
+      responseClaim.amount = responseClaim.amountZWG || 0;
     }
 
     return NextResponse.json({ success: true, data: responseClaim }, { status: 201 });

@@ -16,10 +16,11 @@ export async function PATCH(
     
     // Handle amount updates based on currency
     if (body.currency === 'ZWG' && body.amount) {
-      body.amountZWG = body.amount;
-      body.amount = 0;
+      body.amountZWG = parseFloat(body.amount);
+      body.amount = body.amountZWG; // Store same value for display
     } else if (body.currency === 'USD' && body.amount) {
       body.amountZWG = undefined;
+      body.amount = parseFloat(body.amount);
     }
     
     const claim = await Claim.findByIdAndUpdate(id, body, { new: true });
@@ -29,12 +30,16 @@ export async function PATCH(
     
     // Transform response
     const responseClaim = claim.toObject();
-    if (responseClaim.currency === 'ZWG' && responseClaim.amountZWG) {
-      responseClaim.amount = responseClaim.amountZWG;
+    if (responseClaim.currency === 'ZWG') {
+      responseClaim.amount = responseClaim.amountZWG || 0;
+      if (responseClaim.partialAmountPaidZWG) {
+        responseClaim.partialAmountPaid = responseClaim.partialAmountPaidZWG;
+      }
     }
     
     return NextResponse.json({ success: true, data: responseClaim });
   } catch (error) {
+    console.error('Error updating claim:', error);
     return NextResponse.json({ success: false, error: "Failed to update claim" }, { status: 500 });
   }
 }
@@ -69,8 +74,11 @@ export async function GET(
     
     // Transform response
     const responseClaim = claim.toObject();
-    if (responseClaim.currency === 'ZWG' && responseClaim.amountZWG) {
-      responseClaim.amount = responseClaim.amountZWG;
+    if (responseClaim.currency === 'ZWG') {
+      responseClaim.amount = responseClaim.amountZWG || 0;
+      if (responseClaim.partialAmountPaidZWG) {
+        responseClaim.partialAmountPaid = responseClaim.partialAmountPaidZWG;
+      }
     }
     
     return NextResponse.json({ success: true, data: responseClaim });
